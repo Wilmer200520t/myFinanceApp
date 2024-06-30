@@ -7,9 +7,10 @@ import { Toolbar } from "primereact/toolbar";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
-import { AllTypes, AllTypesRow } from "../../../data/dataTypes";
+import { AllTypesRow } from "../../../data/dataTypes";
 import DialogConfirmation from "./dialogConfirmation";
-import fetchData from "../../../data/fetchData";
+import fetchData, { responseType } from "../../../data/fetchData";
+import arrayDefault from "../../../data/arrayDefault";
 
 interface DataTableCompProps {
   path: string;
@@ -38,12 +39,12 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
     }
   };
 
-  const { colName, errorName, ModalHeader, subtittle } = configTable(path);
+  const { colName, subtittle } = configTable(path);
 
   //states
   const [arrayData, setArrayData] = useState<AllTypesRow[]>([]);
   const [data, setData] = useState<AllTypesRow>(emptyData);
-  const [selectedArrayData, setSelectedArrayData] = useState<AllTypes[]>([]);
+  const [selectedData, setSelectedData] = useState<AllTypesRow[]>([]);
   const [dataDialog, setDataDialog] = useState<boolean>(false);
   const [deleteDataDialog, setDeleteDataDialog] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(false);
@@ -51,36 +52,54 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
 
   //refs
   const toast = useRef<Toast>(null);
-  const dt = useRef<DataTable<AllTypes[]>>(null);
+  const dt = useRef<DataTable<AllTypesRow[]>>(null);
 
   //functions
   useEffect(() => {
-    fetchData.getData(path).then((data) => setArrayData(data));
+    fetchData
+      .getData(path)
+      .then((data) => {
+        if (data as responseType)
+          throw new Error((data as responseType).message);
+
+        setArrayData(data as AllTypesRow[]);
+      })
+      .catch(() => {
+        setArrayData([]);
+      });
   }, [path]);
 
   //controllers
-  const saveData = () => {
+  /*const saveData = async () => {
+    setSubmitted(true);
+
     setDataDialog(false);
     setData(emptyData);
-    let response = fetchData
-      .updateData(path, id, data)
-      .then((data) => setArrayData(data));
-    if (response.error) {
-      toast.current?.show({
-        severity: "error",
-        summary: "Error",
-        detail: response.message,
-        life: 3000,
-      });
-    } else {
+    try {
+      const response: AllTypesRow[] | responseType = await fetchData.createData(
+        path,
+        data
+      );
+
+      if (response as responseType)
+        throw new Error((response as responseType).message);
+
+      setArrayData(response as AllTypesRow[]);
       toast.current?.show({
         severity: "success",
         summary: "Successful",
         detail: "Actualizado correctamente",
         life: 3000,
       });
+    } catch (error: string | unknown) {
+      toast.current?.show({
+        severity: "error",
+        summary: "Error",
+        detail: error instanceof Error ? error.message : "Unknown error",
+        life: 3000,
+      });
     }
-  };
+  };*/
 
   const openNew = () => {
     setData(emptyData);
@@ -93,10 +112,10 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
   };
 
   //Not Used
-  const hideDialog = () => {
-    setSubmitted(false);
-    setDataDialog(false);
-  };
+  //const hideDialog = () => {
+  //  setSubmitted(false);
+  //  setDataDialog(false);
+  //};
 
   const deleteData = () => {
     setArrayData(arrayData.filter((item) => item !== data));
@@ -115,7 +134,7 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
   };
 
   const confirmDeleteSelected = () => {
-    setDeleteArrayDataDialog(true);
+    setDeleteDataDialog(true);
   };
 
   const leftToolbarTemplate = () => {
@@ -132,7 +151,7 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
           icon="pi pi-trash"
           severity="danger"
           onClick={confirmDeleteSelected}
-          disabled={!selectedArrayData || !selectedArrayData.length}
+          disabled={!selectedData || !selectedData.length}
         />
       </div>
     );
@@ -184,18 +203,18 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
   );
 
   //templates Actions
-  const editData = (data: AllTypes) => {
+  const editData = (data: AllTypesRow) => {
     setData({ ...data });
     setDataDialog(true);
   };
 
-  const confirmDeleteData = (data: AllTypes) => {
+  const confirmDeleteData = (data: AllTypesRow) => {
     setData(data);
     setDeleteDataDialog(true);
   };
 
   //Actions
-  function actionBodyTemplate(data: AllTypes) {
+  function actionBodyTemplate(data: AllTypesRow) {
     return (
       <React.Fragment>
         <Button
@@ -229,16 +248,16 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
         <DataTable
           ref={dt}
           value={arrayData}
-          selection={selectedArrayData}
+          selection={selectedData}
           onSelectionChange={(e) => {
             if (Array.isArray(e.value)) {
-              setSelectedArrayData(e.value);
+              setSelectedData(e.value);
             }
           }}
           dataKey="id"
           paginator
           rows={10}
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[25, 50, 75]}
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"
           globalFilter={globalFilter}
@@ -251,6 +270,15 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
             sortable
             style={{ minWidth: "12rem" }}
           />
+          {arrayDefault.characterDefaults.map((item) => (
+            <Column
+              key={item.key}
+              field={item.key}
+              header={item.key}
+              sortable
+              style={{ minWidth: "12rem" }}
+            />
+          ))}
           <Column
             body={actionBodyTemplate}
             exportable={false}

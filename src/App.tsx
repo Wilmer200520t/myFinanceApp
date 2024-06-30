@@ -14,7 +14,7 @@ function App() {
             <h1>Cuentas</h1>
           </div>
           <div className="table-container">
-            <DataTableComp path="Character" />
+            <DataTableComp path="character" />
           </div>
         </Card>
       </div>

@@ -2,7 +2,7 @@ import { AllTypesRow } from "./dataTypes";
 
 const BASE_URL = process.env.BASE_URL_API;
 
-type responseType = {
+export type responseType = {
   error: boolean;
   message: string;
 };
@@ -14,6 +14,7 @@ export async function getData(
   const data: AllTypesRow[] = await fetch(`${BASE_URL}/${path}`)
     .then((response) => response.json())
     .then((json) => {
+      json = json.results || json;
       return json;
     })
     .catch((error) => {
@@ -38,7 +39,7 @@ export async function createData(
       body: JSON.stringify(data),
     });
 
-    const newData: AllTypesRow[] = await getData(path, limit);
+    const newData = await getData(path, limit);
 
     if (!response.ok || !newData) {
       throw new Error(`Failed to update data: ${response.statusText}`);
@@ -73,7 +74,7 @@ export async function updateData(
 
     return {
       error: false,
-      message: "Actualizado correctamente",
+      message: String(id),
     };
   } catch (error) {
     return {
