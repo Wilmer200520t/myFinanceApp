@@ -56,21 +56,32 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
 
   //functions
   useEffect(() => {
+    let isMounted = true; // Bandera para controlar si el componente está montado
+
     fetchData
       .getData(path)
       .then((data) => {
-        if (data as responseType)
-          throw new Error((data as responseType).message);
+        if (data instanceof Error) {
+          throw new Error(data.message);
+        }
 
-        setArrayData(data as AllTypesRow[]);
+        if (isMounted) {
+          setArrayData(data as AllTypesRow[]);
+        }
       })
-      .catch(() => {
-        setArrayData([]);
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        if (isMounted) {
+          setArrayData([]);
+        }
       });
+    return () => {
+      isMounted = false;
+    };
   }, [path]);
 
   //controllers
-  /*const saveData = async () => {
+  const saveData = async () => {
     setSubmitted(true);
 
     setDataDialog(false);
@@ -99,7 +110,7 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
         life: 3000,
       });
     }
-  };*/
+  };
 
   const openNew = () => {
     setData(emptyData);
@@ -112,10 +123,10 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
   };
 
   //Not Used
-  //const hideDialog = () => {
-  //  setSubmitted(false);
-  //  setDataDialog(false);
-  //};
+  const hideDialog = () => {
+    setSubmitted(false);
+    setDataDialog(false);
+  };
 
   const deleteData = () => {
     setArrayData(arrayData.filter((item) => item !== data));
@@ -169,12 +180,12 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
   };
 
   const header = (
-    <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
+    <div className="flex flex-wrap gap-2 align-items-center justify-content-between table-title-search">
       <h4 className="m-0">{subtittle}</h4>
-      <IconField iconPosition="left">
-        <InputIcon className="pi pi-search" />
+      <IconField iconPosition="left" className="icon-field">
         <InputText
           type="search"
+          className="p-inputtext-sm"
           placeholder="Search..."
           onInput={(e) => {
             const target = e.target as HTMLInputElement;
@@ -234,7 +245,6 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
       </React.Fragment>
     );
   }
-
   return (
     <div>
       <Toast ref={toast} />
@@ -256,7 +266,7 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
           }}
           dataKey="id"
           paginator
-          rows={10}
+          rows={25}
           rowsPerPageOptions={[25, 50, 75]}
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"
@@ -264,17 +274,12 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
           header={header}
           selectionMode="multiple">
           <Column selectionMode="multiple" exportable={false} />
-          <Column
-            field="code"
-            header={colName}
-            sortable
-            style={{ minWidth: "12rem" }}
-          />
-          {arrayDefault.characterDefaults.map((item) => (
+
+          {arrayDefault.getArrayDefaults(path).map((item) => (
             <Column
               key={item.key}
               field={item.key}
-              header={item.key}
+              header={item.columnName}
               sortable
               style={{ minWidth: "12rem" }}
             />
@@ -286,14 +291,6 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
           />
         </DataTable>
       </div>
-
-      <DialogConfirmation
-        deleteDialog={deleteDataDialog}
-        hideDialog={hideDeleteDataDialog}
-        deleteDialogFooter={deleteDataDialogFooter}
-        data={"data"}
-        message="¿Estás seguro de eliminar este elemento?"
-      />
     </div>
   );
 };

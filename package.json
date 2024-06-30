@@ -10,14 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/react": "^18.2.38",
+    "@vitejs/plugin-react": "latest",
     "dotenv": "^16.4.5",
     "flowbite-react": "^0.10.1",
-    "primeflex": "^3.3.1",
     "primeicons": "^7.0.0",
-    "primereact": "^10.6.6",
+    "primereact": "latest",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "styled-components": "^6.1.11"
+    "react-transition-group": "^4.4.5"
   },
   "devDependencies": {
     "@types/node": "^20.14.9",

@@ -111,14 +111,40 @@ export const characterDefaults = [
   { key: "species", default: "", columnName: "Especie" },
   { key: "type", default: "", columnName: "Tipo" },
   { key: "gender", default: "unknown", columnName: "Género" },
-  { key: "origin", default: { name: "", url: "" }, columnName: "Origen" },
-  { key: "location", default: { name: "", url: "" }, columnName: "Ubicación" },
+  { key: "origin", default: "", columnName: "Origen" },
+  { key: "location", default: "", columnName: "Ubicación" },
   { key: "image", default: "", columnName: "Imagen" },
   { key: "episode", default: [], columnName: "Episodios" },
   { key: "url", default: "", columnName: "URL" },
   { key: "created", default: "", columnName: "Creado el" },
 ];
 
+export function getArrayDefaults(path: string) {
+  switch (path) {
+    case "cierreMensual":
+      return cierreMensualDefaults;
+    case "cuentas":
+      return cuentasDefaults;
+    case "deudas":
+      return deudasDefaults;
+    case "ejercicio":
+      return ejercicioDefaults;
+    case "ingresos":
+      return ingresosDefaults;
+    case "inversion":
+      return inversionDefaults;
+    case "presupuestos":
+      return presupuestosDefaults;
+    case "transacciones":
+      return transaccionesDefaults;
+    case "usuarios":
+      return usuariosDefaults;
+    case "character":
+      return characterDefaults;
+    default:
+      return [];
+  }
+}
 export default {
   cierreMensualDefaults,
   cuentasDefaults,
@@ -130,4 +156,5 @@ export default {
   transaccionesDefaults,
   usuariosDefaults,
   characterDefaults,
+  getArrayDefaults,
 };
