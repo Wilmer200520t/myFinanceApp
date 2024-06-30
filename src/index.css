@@ -5,3 +5,43 @@
 .sideBarLeft {
   height: 100vh;
 }
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  max-width: calc(100vw - 250px);
+  width: 100%;
+}
+
+.app-container {
+  display: flex;
+}
+
+.sidebar-container {
+  position: fixed;
+  width: 250px;
+  height: 100vh;
+}
+
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  width: calc(100% - 250px);
+}
+
+.table-header {
+  background-color: #1f2937;
+  color: white;
+  padding: 10px 20px;
+  border-bottom: 1px solid #4b5563;
+  border-radius: 0.25rem 0.25rem 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.table-container {
+  padding: 20px;
+  border-radius: 0 0 0.25rem 0.25rem;
+  overflow: auto;
+  max-height: calc(100vh - 100px);
+}

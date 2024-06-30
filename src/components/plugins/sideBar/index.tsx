@@ -1,17 +1,18 @@
 "use client";
 import { Sidebar } from "flowbite-react";
 import {
-  HiArrowSmRight,
   HiChartPie,
-  HiInbox,
-  HiShoppingBag,
-  HiTable,
-  HiUser,
-  HiViewBoards,
+  HiOutlineBriefcase,
+  HiOutlineCurrencyDollar,
+  HiOutlineChartBar,
+  HiOutlineCalculator,
+  HiOutlineSwitchHorizontal,
+  HiOutlineLogin,
+  HiOutlineLogout,
 } from "react-icons/hi";
 import Item from "../sideBarItem";
 
-export function Component() {
+function Component() {
   return (
     <Sidebar aria-label="Roboto" className="sideBarLeft">
       <Sidebar.Logo
@@ -20,19 +21,20 @@ export function Component() {
         imgAlt="Flowbite logo">
         myFinance
       </Sidebar.Logo>
-      <Sidebar.Items style={{ height: "90%" }}>
+      <Sidebar.Items style={{ height: "85%" }}>
         <Sidebar.ItemGroup>
           <Item text="Dashboard" url="#" icon={HiChartPie} />
-          <Item text="Kanban" url="#" icon={HiViewBoards} />
-          <Item text="Inbox" url="#" icon={HiInbox} label="3" />
-          <Item text="Users" url="#" icon={HiUser} />
-          <Item text="Products" url="#" icon={HiShoppingBag} />
-          <Item text="Sign In" url="#" icon={HiArrowSmRight} />
+          <Item text="Cuentas" url="#" icon={HiOutlineBriefcase} />
+          <Item text="Ingresos" url="#" icon={HiOutlineCurrencyDollar} />
+          <Item text="Inversiones" url="#" icon={HiOutlineChartBar} />
+          <Item text="Presupuestos" url="#" icon={HiOutlineCalculator} />
+          <Item text="Transaciones" url="#" icon={HiOutlineSwitchHorizontal} />
         </Sidebar.ItemGroup>
       </Sidebar.Items>
       <Sidebar.Items style={{ height: "5%" }}>
         <Sidebar.ItemGroup>
-          <Item text="Sign Up" url="#" icon={HiTable} />
+          <Item text="Sign In" url="#" icon={HiOutlineLogin} />
+          <Item text="Sign Up" url="#" icon={HiOutlineLogout} />
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>
