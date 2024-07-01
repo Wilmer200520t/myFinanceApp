@@ -5,6 +5,9 @@ import { configTable } from "./data/tableInfoMapping";
 function App() {
   const currentUrl = window.location.href;
   const path = currentUrl.substring(currentUrl.lastIndexOf("/") + 1);
+  if (path === "") {
+    window.location.href = "/dashboard";
+  }
 
   return (
     <div className="app-container">
@@ -26,3 +29,6 @@ function App() {
 }
 
 export default App;
+function useState(arg0: string): [any, any] {
+  throw new Error("Function not implemented.");
+}

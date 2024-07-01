@@ -57,6 +57,18 @@ export const usuariosDefaults = {
   created_at: new Date(),
 };
 
+export const Cuentas = {
+  id: 0,
+  user_id: 0,
+  banco: "",
+  comision: 0,
+  trans_libres: 0,
+  tpcuenta: "ahorro",
+  balance: 0,
+  moneda: "PEN",
+  created_at: new Date(),
+};
+
 export const characterDefaults = {
   id: 0,
   name: "",
@@ -77,6 +89,8 @@ export function getArrayDefaults(path: string) {
   switch (path) {
     case "ejercicio":
       return ejercicioDefaults;
+    case "cuentas":
+      return Cuentas;
     case "ingresos":
       return ingresosDefaults;
     case "inversion":

@@ -1,4 +1,3 @@
-import { IResult } from "mssql";
 import { AllTypesRow } from "./dataTypes";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL_API;

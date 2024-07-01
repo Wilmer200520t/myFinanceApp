@@ -24,7 +24,7 @@ function Component() {
       <Sidebar.Items style={{ height: "85%" }}>
         <Sidebar.ItemGroup>
           <Item text="Dashboard" url={"/dashboard"} icon={HiChartPie} />
-          <Item text="Cuentas" url={"/character"} icon={HiOutlineBriefcase} />
+          <Item text="Cuentas" url={"/cuentas"} icon={HiOutlineBriefcase} />
           <Item
             text="Ingresos"
             url={"/ingresos"}
