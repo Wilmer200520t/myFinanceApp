@@ -12,7 +12,12 @@ import {
 } from "react-icons/hi";
 import Item from "../sideBarItem";
 
-function Component() {
+interface Props {
+  hideLog: boolean;
+  sethideLog: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Component({ hideLog, sethideLog }: Props) {
   return (
     <Sidebar aria-label="Roboto" className="sideBarLeft">
       <Sidebar.Logo
@@ -21,7 +26,7 @@ function Component() {
         imgAlt="Flowbite logo">
         myFinance
       </Sidebar.Logo>
-      <Sidebar.Items style={{ height: "85%" }}>
+      <Sidebar.Items style={{ height: "90%" }}>
         <Sidebar.ItemGroup>
           <Item text="Dashboard" url={"/dashboard"} icon={HiChartPie} />
           <Item text="Cuentas" url={"/cuentas"} icon={HiOutlineBriefcase} />
@@ -45,8 +50,11 @@ function Component() {
       </Sidebar.Items>
       <Sidebar.Items style={{ height: "5%" }}>
         <Sidebar.ItemGroup>
-          <Item text="Sign In" url={"/login"} icon={HiOutlineLogin} />
-          <Item text="Sign Up" url={"/logout"} icon={HiOutlineLogout} />
+          {hideLog ? (
+            <Item text="Sign Out" url={"/logout"} icon={HiOutlineLogout} />
+          ) : (
+            <Item text="Sign In" url={"/login"} icon={HiOutlineLogin} />
+          )}
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>
