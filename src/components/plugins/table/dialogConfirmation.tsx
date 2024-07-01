@@ -4,8 +4,8 @@ interface DialogConfirmationProps {
   deleteDialog: boolean;
   hideDialog: () => void;
   deleteDialogFooter: JSX.Element;
-  data: string;
-  message: string;
+  data: string | number | string[] | number[] | null;
+  message?: string;
 }
 
 function DialogConfirmation({
@@ -15,6 +15,10 @@ function DialogConfirmation({
   data,
   message,
 }: DialogConfirmationProps) {
+  const messageDefault = data
+    ? "Estas seguro de eliminar el registro con ID  "
+    : "Estas seguro de eliminar los registros seleccionados";
+  message = message || messageDefault;
   return (
     <Dialog
       visible={deleteDialog}
@@ -29,11 +33,9 @@ function DialogConfirmation({
           className="pi pi-exclamation-triangle mr-3"
           style={{ fontSize: "2rem" }}
         />
-        {data && (
-          <span>
-            {message} <b>{data}</b>?
-          </span>
-        )}
+        <span>
+          {message} <b>{data || ""}</b>?
+        </span>
       </div>
     </Dialog>
   );

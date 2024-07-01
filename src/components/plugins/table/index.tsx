@@ -4,13 +4,13 @@ import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
-import { IconField } from "primereact/iconfield";
-import { InputIcon } from "primereact/inputicon";
-import { InputText } from "primereact/inputtext";
 import { AllTypesRow } from "../../../data/dataTypes";
-import DialogConfirmation from "./dialogConfirmation";
 import fetchData, { responseType } from "../../../data/fetchData";
-import arrayDefault from "../../../data/arrayDefault";
+import mappingCol from "../../../data/mappigColumns";
+import dataDefault from "../../../data/defaultsColumnData";
+import ModalTemplate from "./modal";
+import DialogConfirmation from "./dialogConfirmation";
+import { configTable } from "../../../data/tableInfoMapping";
 
 interface DataTableCompProps {
   path: string;
@@ -19,29 +19,10 @@ interface DataTableCompProps {
 const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
   const emptyData: AllTypesRow = {} as AllTypesRow;
 
-  const configTable = (path: string) => {
-    switch (path) {
-      case "Character":
-        return {
-          colName: "Name",
-          errorName: "Name is required.",
-          ModalHeader: "Character Information",
-          subtittle: "Character",
-        };
-      // Puedes agregar más configuraciones para otros paths aquí
-      default:
-        return {
-          colName: "Unknown",
-          errorName: "Unknown field",
-          ModalHeader: "Unknown Information",
-          subtittle: "Unknown",
-        };
-    }
-  };
+  // Configuración dinámica del título y subtítulo del modal según la ruta
+  const { ModalHeader } = configTable(path);
 
-  const { colName, subtittle } = configTable(path);
-
-  //states
+  // Estados del componente
   const [arrayData, setArrayData] = useState<AllTypesRow[]>([]);
   const [data, setData] = useState<AllTypesRow>(emptyData);
   const [selectedData, setSelectedData] = useState<AllTypesRow[]>([]);
@@ -50,11 +31,11 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [globalFilter, setGlobalFilter] = useState<string>("");
 
-  //refs
+  // Referencias a componentes
   const toast = useRef<Toast>(null);
   const dt = useRef<DataTable<AllTypesRow[]>>(null);
 
-  //functions
+  // Efecto para cargar datos iniciales y actualizar según la ruta
   useEffect(() => {
     let isMounted = true; // Bandera para controlar si el componente está montado
 
@@ -75,27 +56,30 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
           setArrayData([]);
         }
       });
+
     return () => {
-      isMounted = false;
+      isMounted = false; // Desmontar componente
     };
-  }, [path]);
+  }, [path]); // Ejecutar efecto cuando cambia la ruta
 
-  //controllers
+  // Función para guardar datos modificados o nuevos
   const saveData = async () => {
-    setSubmitted(true);
+    setSubmitted(true); // Indicar que se ha enviado el formulario
 
-    setDataDialog(false);
-    setData(emptyData);
+    setDataDialog(false); // Ocultar modal de edición
+    setData(emptyData); // Resetear datos de la fila
+
     try {
       const response: AllTypesRow[] | responseType = await fetchData.createData(
         path,
         data
       );
 
-      if (response as responseType)
+      if (response as responseType) {
         throw new Error((response as responseType).message);
+      }
 
-      setArrayData(response as AllTypesRow[]);
+      setArrayData(response as AllTypesRow[]); // Actualizar datos en la tabla
       toast.current?.show({
         severity: "success",
         summary: "Successful",
@@ -112,42 +96,48 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
     }
   };
 
+  // Función para abrir el modal de creación de nuevo registro
   const openNew = () => {
-    setData(emptyData);
-    setSubmitted(false);
-    setDataDialog(true);
+    setData(emptyData); // Resetear datos de la fila
+    setSubmitted(false); // Indicar que no se ha enviado el formulario
+    setDataDialog(true); // Mostrar modal de edición
   };
 
+  // Función para ocultar el modal de eliminación de datos
   const hideDeleteDataDialog = () => {
-    setDeleteDataDialog(false);
+    setDeleteDataDialog(false); // Ocultar modal de eliminación
   };
 
-  //Not Used
+  // Función para ocultar el modal de edición de datos
   const hideDialog = () => {
-    setSubmitted(false);
-    setDataDialog(false);
+    setSubmitted(false); // Resetear estado de envío de formulario
+    setDataDialog(false); // Ocultar modal de edición
   };
 
+  // Función para eliminar datos de la tabla
   const deleteData = () => {
-    setArrayData(arrayData.filter((item) => item !== data));
-    setDeleteDataDialog(false);
-    setData(emptyData);
+    setArrayData(arrayData.filter((item) => item !== data)); // Filtrar datos eliminando el seleccionado
+    setDeleteDataDialog(false); // Ocultar modal de confirmación de eliminación
+    setData(emptyData); // Resetear datos de la fila
     toast.current?.show({
       severity: "success",
       summary: "Successful",
-      detail: "Data Deleted",
+      detail: "Eliminado correctamente",
       life: 3000,
     });
   };
 
+  // Función para exportar datos en formato CSV
   const exportCSV = () => {
-    dt.current?.exportCSV();
+    dt.current?.exportCSV(); // Llamar método de exportación de DataTable
   };
 
+  // Función para mostrar el modal de confirmación de eliminación de registros seleccionados
   const confirmDeleteSelected = () => {
-    setDeleteDataDialog(true);
+    setDeleteDataDialog(true); // Mostrar modal de confirmación de eliminación
   };
 
+  // Plantilla para la barra de herramientas izquierda (Nuevo y Eliminar)
   const leftToolbarTemplate = () => {
     return (
       <div className="flex flex-wrap gap-2">
@@ -168,6 +158,7 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
     );
   };
 
+  // Plantilla para la barra de herramientas derecha (Exportar)
   const rightToolbarTemplate = () => {
     return (
       <Button
@@ -179,23 +170,15 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
     );
   };
 
-  const header = (
-    <div className="flex flex-wrap gap-2 align-items-center justify-content-between table-title-search">
-      <h4 className="m-0">{subtittle}</h4>
-      <IconField iconPosition="left" className="icon-field">
-        <InputText
-          type="search"
-          className="p-inputtext-sm"
-          placeholder="Search..."
-          onInput={(e) => {
-            const target = e.target as HTMLInputElement;
-            setGlobalFilter(target.value);
-          }}
-        />
-      </IconField>
-    </div>
+  // Pie de página del modal de edición de datos
+  const dataDialogFooter = (
+    <React.Fragment>
+      <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
+      <Button label="Save" icon="pi pi-check" onClick={saveData} />
+    </React.Fragment>
   );
 
+  // Pie de página del modal de confirmación de eliminación de datos
   const deleteDataDialogFooter = (
     <React.Fragment>
       <Button
@@ -213,19 +196,8 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
     </React.Fragment>
   );
 
-  //templates Actions
-  const editData = (data: AllTypesRow) => {
-    setData({ ...data });
-    setDataDialog(true);
-  };
-
-  const confirmDeleteData = (data: AllTypesRow) => {
-    setData(data);
-    setDeleteDataDialog(true);
-  };
-
-  //Actions
-  function actionBodyTemplate(data: AllTypesRow) {
+  // Plantilla de cuerpo para las acciones de cada fila (Editar y Eliminar)
+  const actionBodyTemplate = (data: AllTypesRow) => {
     return (
       <React.Fragment>
         <Button
@@ -244,55 +216,96 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
         />
       </React.Fragment>
     );
-  }
+  };
+
+  // Función para editar datos (abrir modal de edición con los datos de la fila)
+  const editData = (data: AllTypesRow) => {
+    setData({ ...data });
+    setDataDialog(true);
+  };
+
+  // Función para confirmar eliminación de datos (abrir modal de confirmación de eliminación)
+  const confirmDeleteData = (data: AllTypesRow) => {
+    setData(data);
+    setDeleteDataDialog(true);
+  };
+
+  // Renderizado del componente DataTableComp
   return (
     <div>
-      <Toast ref={toast} />
+      <Toast ref={toast} /> {/* Componente Toast para mostrar mensajes */}
       <div className="card">
+        {/* Barra de herramientas superior con botones de acción */}
         <Toolbar
           className="mb-4"
-          left={leftToolbarTemplate}
-          right={rightToolbarTemplate}
+          left={leftToolbarTemplate} // Barra de herramientas izquierda (Nuevo y Eliminar)
+          right={rightToolbarTemplate} // Barra de herramientas derecha (Exportar)
         />
 
+        {/* DataTable para mostrar los datos en forma de tabla */}
         <DataTable
-          ref={dt}
-          value={arrayData}
-          selection={selectedData}
+          ref={dt} // Referencia al componente DataTable para acciones como exportar
+          value={arrayData} // Datos de la tabla
+          selection={selectedData} // Filas seleccionadas
           onSelectionChange={(e) => {
             if (Array.isArray(e.value)) {
-              setSelectedData(e.value);
+              setSelectedData(e.value); // Actualizar filas seleccionadas
             }
           }}
-          dataKey="id"
-          paginator
-          rows={25}
-          rowsPerPageOptions={[25, 50, 75]}
-          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"
-          globalFilter={globalFilter}
-          header={header}
-          selectionMode="multiple">
-          <Column selectionMode="multiple" exportable={false} />
-
-          {arrayDefault.getArrayDefaults(path).map((item) => (
+          dataKey="id" // Clave única de los datos
+          paginator // Activar paginación
+          rows={25} // Número de filas por página
+          rowsPerPageOptions={[25, 50, 75]} // Opciones de número de filas por página
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" // Plantilla de paginador
+          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}" // Plantilla de información de página actual
+          globalFilter={globalFilter} // Filtro global de la tabla
+          selectionMode="multiple" // Modo de selección múltiple
+        >
+          <Column selectionMode="multiple" exportable={false} />{" "}
+          {/* Columna para selección múltiple */}
+          {/* Mapeo de columnas según la ruta */}
+          {mappingCol.getMappingColumn(path).map((item) => (
             <Column
               key={item.key}
               field={item.key}
               header={item.columnName}
-              sortable
-              style={{ minWidth: "12rem" }}
+              sortable // Activar ordenamiento
+              style={{ minWidth: "12rem" }} // Estilo mínimo de la columna
             />
           ))}
+          {/* Columna de acciones (editar y eliminar) */}
           <Column
-            body={actionBodyTemplate}
-            exportable={false}
-            style={{ minWidth: "12rem" }}
+            body={actionBodyTemplate} // Cuerpo personalizado de la columna (botones de acción)
+            exportable={false} // No exportable a CSV
+            style={{ minWidth: "12rem" }} // Estilo mínimo de la columna
           />
         </DataTable>
+
+        {/* Modal de edición de datos */}
+        <ModalTemplate
+          visible={dataDialog} // Visibilidad del modal
+          header={ModalHeader} // Título del modal
+          actions={dataDialogFooter} // Acciones del modal
+          ocultarDialog={hideDialog} // Función para ocultar el modal
+          esquema={mappingCol.getMappingColumn(path)} // Mapeo de columnas para el modal
+          data={
+            Object.keys(data).length === 0
+              ? (dataDefault.getArrayDefaults(path) as AllTypesRow) // Datos por defecto según la ruta
+              : data || emptyData // Datos actuales o vacíos
+          }
+          setData={setData} // Función para actualizar datos del modal
+        />
+
+        {/* Modal de confirmación de eliminación de datos */}
+        <DialogConfirmation
+          deleteDialog={deleteDataDialog} // Visibilidad del modal de confirmación de eliminación
+          hideDialog={hideDeleteDataDialog} // Función para ocultar el modal
+          deleteDialogFooter={deleteDataDialogFooter} // Pie de página del modal de confirmación de eliminación
+          data={data["id"]} // ID de los datos a eliminar
+        />
       </div>
     </div>
   );
 };
 
-export default DataTableComp;
+export default DataTableComp; // Exportar componente DataTableComp

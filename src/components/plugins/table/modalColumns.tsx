@@ -40,11 +40,4 @@ function modalColumns({
   );
 }
 
-const productDialogFooter = (
-  <React.Fragment>
-    <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
-    <Button label="Save" icon="pi pi-check" onClick={saveData} />
-  </React.Fragment>
-);
-
 export default modalColumns;

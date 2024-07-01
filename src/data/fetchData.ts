@@ -1,3 +1,4 @@
+import { IResult } from "mssql";
 import { AllTypesRow } from "./dataTypes";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL_API;
@@ -28,13 +29,7 @@ export async function getData(
       return [];
     });
 
-  const returData = data.map((element) => {
-    element.origin = element.origin.name;
-    element.location = element.location.name;
-    element.episode = element.episode[0];
-    return element;
-  });
-  return returData.slice(0, limit || returData.length);
+  return data.slice(0, limit || data.length);
 }
 
 export async function createData(

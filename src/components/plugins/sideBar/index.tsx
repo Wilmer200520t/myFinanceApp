@@ -23,18 +23,30 @@ function Component() {
       </Sidebar.Logo>
       <Sidebar.Items style={{ height: "85%" }}>
         <Sidebar.ItemGroup>
-          <Item text="Dashboard" url="#" icon={HiChartPie} />
-          <Item text="Cuentas" url="#" icon={HiOutlineBriefcase} />
-          <Item text="Ingresos" url="#" icon={HiOutlineCurrencyDollar} />
-          <Item text="Inversiones" url="#" icon={HiOutlineChartBar} />
-          <Item text="Presupuestos" url="#" icon={HiOutlineCalculator} />
-          <Item text="Transaciones" url="#" icon={HiOutlineSwitchHorizontal} />
+          <Item text="Dashboard" url={"/dashboard"} icon={HiChartPie} />
+          <Item text="Cuentas" url={"/character"} icon={HiOutlineBriefcase} />
+          <Item
+            text="Ingresos"
+            url={"/ingresos"}
+            icon={HiOutlineCurrencyDollar}
+          />
+          <Item text="Inversion" url={"/inversion"} icon={HiOutlineChartBar} />
+          <Item
+            text="Presupuestos"
+            url={"/presupuestos"}
+            icon={HiOutlineCalculator}
+          />
+          <Item
+            text="Transaciones"
+            url={"/transacciones"}
+            icon={HiOutlineSwitchHorizontal}
+          />
         </Sidebar.ItemGroup>
       </Sidebar.Items>
       <Sidebar.Items style={{ height: "5%" }}>
         <Sidebar.ItemGroup>
-          <Item text="Sign In" url="#" icon={HiOutlineLogin} />
-          <Item text="Sign Up" url="#" icon={HiOutlineLogout} />
+          <Item text="Sign In" url={"/login"} icon={HiOutlineLogin} />
+          <Item text="Sign Up" url={"/logout"} icon={HiOutlineLogout} />
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>
