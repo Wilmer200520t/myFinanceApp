@@ -10,25 +10,39 @@ export type responseType = {
 export async function getData(
   path: string,
   limit?: number
-): Promise<responseType | AllTypesRow[]> {
-  const data: AllTypesRow[] = await fetch(`${BASE_URL}/${path}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((json) => {
-      json = json.results || json;
-
-      return json;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      return [];
+): Promise<AllTypesRow[]> {
+  try {
+    const response = await fetch(`${BASE_URL}/${path}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
-  return data.slice(0, limit || data.length);
+    if (!response.ok) {
+      console.error("Error: Network response was not ok", response.statusText);
+      return [];
+    }
+
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      console.error("Error: Expected JSON response, but got", contentType);
+      return [];
+    }
+
+    const json = await response.json();
+    const data: AllTypesRow[] = json.results || json;
+
+    if (!Array.isArray(data)) {
+      console.error("Error: Data is not an array", data);
+      return [];
+    }
+
+    return data.slice(0, limit || data.length);
+  } catch (error) {
+    console.error("Error:", error);
+    return [];
+  }
 }
 
 export async function createData(

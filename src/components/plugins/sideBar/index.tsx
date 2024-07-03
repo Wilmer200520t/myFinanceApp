@@ -28,22 +28,22 @@ function Component({ hideLog, sethideLog }: Props) {
       </Sidebar.Logo>
       <Sidebar.Items style={{ height: "90%" }}>
         <Sidebar.ItemGroup>
-          <Item text="Dashboard" url={"/dashboard"} icon={HiChartPie} />
-          <Item text="Cuentas" url={"/cuentas"} icon={HiOutlineBriefcase} />
+          <Item text="Dashboard" url="/dashboard" icon={HiChartPie} />
+          <Item text="Cuentas" url="/cuentas" icon={HiOutlineBriefcase} />
           <Item
             text="Ingresos"
-            url={"/ingresos"}
+            url="/ingresos"
             icon={HiOutlineCurrencyDollar}
           />
-          <Item text="Inversion" url={"/inversion"} icon={HiOutlineChartBar} />
+          <Item text="Inversion" url="/inversion" icon={HiOutlineChartBar} />
           <Item
             text="Presupuestos"
-            url={"/presupuestos"}
+            url="/presupuestos"
             icon={HiOutlineCalculator}
           />
           <Item
             text="Transaciones"
-            url={"/transacciones"}
+            url="/transacciones"
             icon={HiOutlineSwitchHorizontal}
           />
         </Sidebar.ItemGroup>
@@ -51,9 +51,9 @@ function Component({ hideLog, sethideLog }: Props) {
       <Sidebar.Items style={{ height: "5%" }}>
         <Sidebar.ItemGroup>
           {hideLog ? (
-            <Item text="Sign Out" url={"/logout"} icon={HiOutlineLogout} />
+            <Item text="Sign Out" url="/logout" icon={HiOutlineLogout} />
           ) : (
-            <Item text="Sign In" url={"/login"} icon={HiOutlineLogin} />
+            <Item text="Sign In" url="/login" icon={HiOutlineLogin} />
           )}
         </Sidebar.ItemGroup>
       </Sidebar.Items>
