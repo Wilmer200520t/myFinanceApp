@@ -56,3 +56,41 @@
   margin-bottom: 20px;
   box-sizing: border-box;
 }
+
+/* Login style */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0; /* Color de fondo opcional */
+}
+
+.login-content {
+  width: 400px; /* Ancho del formulario */
+  padding: 30px;
+  background-color: #ffffff; /* Color de fondo del formulario */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  border-radius: 5px;
+}
+
+.p-field {
+  margin-bottom: 1.5rem; /* Espacio entre campos */
+}
+
+.p-float-label .p-inputtext-lg {
+  width: 100%;
+}
+
+.p-button-lg {
+  width: 100%;
+  font-size: 1.5rem; /* Tamaño de fuente del botón */
+  padding: 1rem 2rem; /* Padding más grande para el botón */
+  background-color: #007ad9; /* Color del botón */
+  color: #ffffff; /* Color del texto del botón */
+  border: none;
+}
+
+.p-button-lg:hover {
+  background-color: #0056b3; /* Color del botón al pasar el mouse */
+}
