@@ -3,6 +3,7 @@ import DataTableComp from "../plugins/table";
 import { configTable } from "../../data/tableInfoMapping";
 import FormLogin from "../plugins/form/login";
 import FormRegister from "../plugins/form/register";
+import Dashboard from "../plugins/dashboard";
 
 // Define una interfaz para las props del componente
 interface MainContentProps {
@@ -26,10 +27,14 @@ const MainContent: React.FC<MainContentProps> = ({ path }) => {
       </div>
     ),
     dashboard: (
-      <div className="main-content">
-        <h1>Dashboard</h1>
-        {/* Aquí puedes colocar el contenido específico para el dashboard */}
-      </div>
+      <>
+        <div className="table-header">
+          <h1>{configTable(path).subtittle}</h1>
+        </div>
+        <div className="table-container">
+          <Dashboard />
+        </div>
+      </>
     ),
     default: (
       <>

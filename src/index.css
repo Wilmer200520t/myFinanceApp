@@ -94,3 +94,44 @@
 .p-button-lg:hover {
   background-color: #0056b3; /* Color del botón al pasar el mouse */
 }
+
+/* Dashboard style */
+.dash {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.dash_header {
+  height: 10%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.dash_body {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  gap: 2rem;
+  box-shadow: 4px 3px 3px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.dash_body_left,
+.dash_body_right {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 2rem;
+}
+
+.dash_body_right_bottom {
+  display: flex;
+}
+
+.dash_body_right_bottom_left,
+.dash_body_right_bottom_right {
+  flex: 1;
+}
