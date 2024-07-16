@@ -3,7 +3,7 @@ import { Dialog } from "primereact/dialog";
 import { AllTypesRow } from "../../../data/dataTypes";
 import { InputText } from "primereact/inputtext";
 import { defaultTypes } from "../../../data/mappigColumns";
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 
 interface modalProps {
   visible: boolean;
@@ -47,6 +47,8 @@ function ModalTemplate({
       footer={actions}
       onHide={ocultarDialog}>
       {esquema.map((esquema) => {
+        if (esquema.key === "cofiguracion" || esquema.key === "user_id")
+          return null;
         return (
           <div className="field" key={esquema.key}>
             <label htmlFor={esquema.key} className="font-bold">
@@ -54,10 +56,11 @@ function ModalTemplate({
             </label>
             <InputText
               id={esquema.key}
-              disabled={esquema.key === "id"}
+              disabled={esquema.disabled}
               value={String(data[esquema.key as keyof AllTypesRow])} // Explicitly define the type of the data object property
               onChange={(e) => handleChange(e, esquema.key)}
               required
+              type={esquema.type}
             />
           </div>
         );

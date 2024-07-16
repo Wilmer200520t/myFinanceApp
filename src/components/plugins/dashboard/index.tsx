@@ -34,9 +34,7 @@ function Dashboard() {
       <div className="dash_body">
         <div className="dash_body_left">
           <div className="dash_body_left_top">
-            <h2 className="dash_subtitle">
-              Balance del Mes Actual: Ingresos vs Gastos vs Presupuestos
-            </h2>
+            <h2 className="dash_subtitle">Balance del Mes Actual</h2>
             <BarIncomeExch />
           </div>
           <div className="dash_body_left_bottom">
@@ -46,9 +44,7 @@ function Dashboard() {
         </div>
         <div className="dash_body_right">
           <div className="dash_body_right_top">
-            <h2 className="dash_subtitle">
-              Analisis del Año Actual: Ingresos vs Gastos vs Presupuestos
-            </h2>
+            <h2 className="dash_subtitle">Analisis del Año Actual</h2>
             <AxisIcomeExch />
           </div>
           <div className="dash_body_right_bottom">

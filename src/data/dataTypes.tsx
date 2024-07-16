@@ -100,21 +100,6 @@ export type Usuarios = {
   created_at?: Date;
 };
 
-type Character = {
-  id: number;
-  name: string;
-  status: "Alive" | "Dead" | "unknown";
-  species: string;
-  type: string | null;
-  gender: "Female" | "Male" | "Genderless" | "unknown";
-  origin: string | { name: string; url: string };
-  location: string | { name: string; url: string };
-  image: string;
-  episode: string[];
-  url: string;
-  created: string;
-};
-
 export type AllTypes =
   | CierreMensual[]
   | Cuentas[]
@@ -124,8 +109,7 @@ export type AllTypes =
   | Inversion[]
   | Presupuestos[]
   | Transacciones[]
-  | Usuarios[]
-  | Character[];
+  | Usuarios[];
 
 export type AllTypesRow =
   | CierreMensual
@@ -136,5 +120,4 @@ export type AllTypesRow =
   | Inversion
   | Presupuestos
   | Transacciones
-  | Usuarios
-  | Character;
+  | Usuarios;

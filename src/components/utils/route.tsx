@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import DataTableComp from "../plugins/table";
 import { configTable } from "../../data/tableInfoMapping";
 import FormLogin from "../plugins/form/login";
 import FormRegister from "../plugins/form/register";
 import Dashboard from "../plugins/dashboard";
+import Loader from "../plugins/Loader";
 
 // Define una interfaz para las props del componente
 interface MainContentProps {
@@ -16,6 +17,14 @@ interface PathContent {
 }
 
 const MainContent: React.FC<MainContentProps> = ({ path }) => {
+  const [isReady, setIsReady] = useState(false);
+
+  useState(() => {
+    setTimeout(() => {
+      setIsReady(true);
+    }, 300);
+  });
+
   // Define un objeto que mapee cada ruta a su contenido correspondiente
   const pathContent: PathContent = {
     login: <FormLogin />,
@@ -51,7 +60,11 @@ const MainContent: React.FC<MainContentProps> = ({ path }) => {
   // Obtén el contenido según la ruta, o utiliza el contenido predeterminado si no se encuentra la ruta específica
   const content = pathContent[path] || pathContent.default;
 
-  return <>{content}</>;
+  if (!isReady) {
+    return <Loader visible={isReady} />;
+  } else {
+    return <>{content}</>;
+  }
 };
 
 export default MainContent;

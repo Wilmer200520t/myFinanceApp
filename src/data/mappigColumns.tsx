@@ -1,126 +1,270 @@
-export const cierreMensual = [
-  { key: "id", columnName: "ID" },
-  { key: "user_id", columnName: "User ID" },
-  { key: "ejercicio_id", columnName: "Ejercicio ID" },
-  { key: "inversiones", columnName: "Inversiones" },
-  { key: "amount_ingresos", columnName: "Amount Ingresos" },
-  { key: "tax_amount", columnName: "Tax Amount" },
+export const cierreMensual: defaultTypes[] = [
+  { key: "id", columnName: "ID", type: "text", disabled: true },
+  { key: "user_id", columnName: "User ID", type: "text", disabled: true },
+  {
+    key: "ejercicio_id",
+    columnName: "Ejercicio ID",
+    type: "text",
+    disabled: true,
+  },
+  {
+    key: "inversiones",
+    columnName: "Inversiones",
+    type: "text",
+    disabled: false,
+  },
+  {
+    key: "amount_ingresos",
+    columnName: "Amount Ingresos",
+    type: "number",
+    disabled: false,
+  },
+  {
+    key: "tax_amount",
+    columnName: "Tax Amount",
+    type: "number",
+    disabled: false,
+  },
   {
     key: "monto_estimado_gasto",
     columnName: "Monto Estimado Gasto",
+    type: "number",
+    disabled: false,
   },
-  { key: "monto_gasto_real", columnName: "Monto Gasto Real" },
-  { key: "trend_type", columnName: "Trend Type" },
+  {
+    key: "monto_gasto_real",
+    columnName: "Monto Gasto Real",
+    type: "number",
+    disabled: false,
+  },
+  {
+    key: "trend_type",
+    columnName: "Trend Type",
+    type: "text",
+    disabled: false,
+  },
 ];
 
-export const cuentas = [
-  { key: "id", columnName: "ID" },
-  { key: "user_id", columnName: "User ID" },
-  { key: "banco", columnName: "Banco" },
-  { key: "comision", columnName: "Comisión" },
-  { key: "trans_libres", columnName: "Trans Libres" },
-  { key: "tpcuenta", columnName: "Tipo de Cuenta" },
-  { key: "balance", columnName: "Balance" },
-  { key: "moneda", columnName: "Moneda" },
-  { key: "created_at", columnName: "Creado el" },
+export const cuentas: defaultTypes[] = [
+  { key: "id", columnName: "ID", type: "text", disabled: true },
+  { key: "user_id", columnName: "User ID", type: "text", disabled: true },
+  { key: "banco", columnName: "Banco", type: "text", disabled: false },
+  { key: "comision", columnName: "Comisión", type: "number", disabled: false },
+  {
+    key: "trans_libres",
+    columnName: "Trans Libres",
+    type: "number",
+    disabled: false,
+  },
+  {
+    key: "tpcuenta",
+    columnName: "Tipo de Cuenta",
+    type: "text",
+    disabled: false,
+  },
+  { key: "balance", columnName: "number", type: "number", disabled: false },
+  { key: "moneda", columnName: "Moneda", type: "text", disabled: false },
+  { key: "created_at", columnName: "Creado el", type: "date", disabled: true },
 ];
 
-export const deudas = [
-  { key: "id", columnName: "ID" },
-  { key: "user_id", columnName: "User ID" },
-  { key: "estado", columnName: "Estado" },
-  { key: "ctadestino", columnName: "Cuenta Destino" },
-  { key: "ctaorigen", columnName: "Cuenta Origen" },
-  { key: "acreditor", columnName: "Acreditor" },
-  { key: "monto", columnName: "Monto" },
-  { key: "interes", columnName: "Interés" },
-  { key: "plazo", columnName: "Plazo" },
-  { key: "dfecha", columnName: "Fecha de Deuda" },
-  { key: "fecha_incio", columnName: "Fecha de Inicio" },
-  { key: "fecha_fin", columnName: "Fecha de Fin" },
+export const deudas: defaultTypes[] = [
+  { key: "id", columnName: "ID", type: "text", disabled: true },
+  { key: "user_id", columnName: "User ID", type: "text", disabled: true },
+  { key: "estado", columnName: "Estado", type: "text", disabled: false },
+  {
+    key: "ctadestino",
+    columnName: "Cuenta Destino",
+    type: "text",
+    disabled: false,
+  },
+  {
+    key: "ctaorigen",
+    columnName: "Cuenta Origen",
+    type: "text",
+    disabled: false,
+  },
+  { key: "acreditor", columnName: "Acreditor", type: "text", disabled: false },
+  { key: "monto", columnName: "Monto", type: "number", disabled: false },
+  { key: "interes", columnName: "Interés", type: "number", disabled: false },
+  { key: "plazo", columnName: "Plazo", type: "number", disabled: false },
+  {
+    key: "dfecha",
+    columnName: "Fecha de Deuda",
+    type: "date",
+    disabled: false,
+  },
+  {
+    key: "fecha_incio",
+    columnName: "Fecha de Inicio",
+    type: "date",
+    disabled: false,
+  },
+  {
+    key: "fecha_fin",
+    columnName: "Fecha de Fin",
+    type: "date",
+    disabled: false,
+  },
 ];
 
-export const ejercicio = [
-  { key: "id", columnName: "ID" },
-  { key: "ejercicio", columnName: "Ejercicio" },
-  { key: "periodo", columnName: "Periodo" },
+export const ejercicio: defaultTypes[] = [
+  { key: "id", columnName: "ID", type: "text", disabled: true },
+  { key: "ejercicio", columnName: "Ejercicio", type: "text", disabled: false },
+  { key: "periodo", columnName: "Periodo", type: "text", disabled: false },
 ];
 
-export const ingresos = [
-  { key: "id", columnName: "ID" },
-  { key: "user_id", columnName: "User ID" },
-  { key: "ejericio_id", columnName: "Ejercicio ID" },
-  { key: "ctadestino", columnName: "Cuenta Destino" },
-  { key: "monto", columnName: "Monto" },
-  { key: "created_at", columnName: "Creado el" },
+export const ingresos: defaultTypes[] = [
+  { key: "id", columnName: "ID", type: "text", disabled: true },
+  { key: "user_id", columnName: "User ID", type: "text", disabled: true },
+  {
+    key: "ejericio_id",
+    columnName: "Ejercicio ID",
+    type: "text",
+    disabled: true,
+  },
+  {
+    key: "ctadestino",
+    columnName: "Cuenta Destino",
+    type: "text",
+    disabled: false,
+  },
+  { key: "monto", columnName: "Monto", type: "number", disabled: false },
+  { key: "created_at", columnName: "Creado el", type: "date", disabled: true },
 ];
 
-export const inversion = [
-  { key: "id", columnName: "ID" },
-  { key: "user_id", columnName: "User ID" },
-  { key: "tpinvers", columnName: "Tipo de Inversión" },
-  { key: "monto", columnName: "Monto" },
-  { key: "estado", columnName: "Estado" },
-  { key: "monto_regreo", columnName: "Monto de Regreso" },
-  { key: "fecha", columnName: "Fecha" },
-  { key: "back_purchase", columnName: "Fecha de Compra" },
+export const inversion: defaultTypes[] = [
+  { key: "id", columnName: "ID", type: "text", disabled: true },
+  { key: "user_id", columnName: "User ID", type: "text", disabled: true },
+  {
+    key: "tpinvers",
+    columnName: "Tipo de Inversión",
+    type: "text",
+    disabled: false,
+  },
+  { key: "monto", columnName: "Monto", type: "number", disabled: false },
+  { key: "estado", columnName: "Estado", type: "text", disabled: false },
+  {
+    key: "monto_regreo",
+    columnName: "Monto de Regreso",
+    type: "number",
+    disabled: false,
+  },
+  { key: "fecha", columnName: "Fecha", type: "date", disabled: false },
+  {
+    key: "back_purchase",
+    columnName: "Fecha de Compra",
+    type: "date",
+    disabled: false,
+  },
 ];
 
-export const presupuestos = [
-  { key: "id", columnName: "ID" },
-  { key: "user_id", columnName: "User ID" },
-  { key: "ejericio_id", columnName: "Ejercicio ID" },
-  { key: "title", columnName: "Título" },
-  { key: "tppresup", columnName: "Tipo de Presupuesto" },
-  { key: "estado", columnName: "Estado" },
-  { key: "preamount", columnName: "Monto del Presupuesto" },
-  { key: "description", columnName: "Descripción" },
-  { key: "created_at", columnName: "Creado el" },
+export const presupuestos: defaultTypes[] = [
+  { key: "id", columnName: "ID", type: "text", disabled: true },
+  { key: "user_id", columnName: "User ID", type: "text", disabled: true },
+  {
+    key: "ejericio_id",
+    columnName: "Ejercicio ID",
+    type: "text",
+    disabled: false,
+  },
+  { key: "title", columnName: "Título", type: "text", disabled: false },
+  {
+    key: "tppresup",
+    columnName: "Tipo de Presupuesto",
+    type: "text",
+    disabled: false,
+  },
+  { key: "estado", columnName: "Estado", type: "text", disabled: false },
+  {
+    key: "preamount",
+    columnName: "Monto del Presupuesto",
+    type: "number",
+    disabled: false,
+  },
+  {
+    key: "description",
+    columnName: "Descripción",
+    type: "text",
+    disabled: false,
+  },
+  { key: "created_at", columnName: "Creado el", type: "date", disabled: true },
 ];
 
-export const transacciones = [
-  { key: "id", columnName: "ID" },
-  { key: "account_id", columnName: "Account ID" },
-  { key: "ejericio_id", columnName: "Ejercicio ID" },
-  { key: "monto", columnName: "Monto" },
-  { key: "descripcion", columnName: "Descripción" },
-  { key: "tptransac", columnName: "Tipo de Transacción" },
-  { key: "opfecha", columnName: "Fecha de Operación" },
-  { key: "created_at", columnName: "Creado el" },
+export const transacciones: defaultTypes[] = [
+  { key: "id", columnName: "ID", type: "text", disabled: true },
+  {
+    key: "account_id",
+    columnName: "Account ID",
+    type: "text",
+    disabled: false,
+  },
+  {
+    key: "ejericio_id",
+    columnName: "Ejercicio ID",
+    type: "text",
+    disabled: false,
+  },
+  { key: "monto", columnName: "Monto", type: "number", disabled: false },
+  {
+    key: "descripcion",
+    columnName: "Descripción",
+    type: "text",
+    disabled: false,
+  },
+  {
+    key: "tptransac",
+    columnName: "Tipo de Transacción",
+    type: "text",
+    disabled: false,
+  },
+  {
+    key: "opfecha",
+    columnName: "Fecha de Operación",
+    type: "date",
+    disabled: false,
+  },
+  { key: "created_at", columnName: "Creado el", type: "date", disabled: true },
 ];
 
-export const usuarios = [
-  { key: "id", columnName: "ID" },
-  { key: "nomusuario", columnName: "Nombre de Usuario" },
-  { key: "foto", columnName: "Foto" },
-  { key: "nombres", columnName: "Nombres" },
-  { key: "apellidos", columnName: "Apellidos" },
-  { key: "nacimiento", columnName: "Fecha de Nacimiento" },
-  { key: "pais", columnName: "País" },
-  { key: "correo", columnName: "Correo" },
-  { key: "password", columnName: "Contraseña" },
-  { key: "cofiguracion", columnName: "Configuración" },
-  { key: "created_at", columnName: "Creado el" },
-];
-
-export const character = [
-  { key: "id", columnName: "ID" },
-  { key: "name", columnName: "Nombre" },
-  { key: "status", default: "Alive", columnName: "Estado" },
-  { key: "species", columnName: "Especie" },
-  { key: "type", columnName: "Tipo" },
-  { key: "gender", default: "Male", columnName: "Género" },
-  { key: "origin", columnName: "Origen" },
-  { key: "location", columnName: "Ubicación" },
-  { key: "image", columnName: "Imagen" },
-  { key: "episode", columnName: "Episodios" },
-  { key: "url", columnName: "URL" },
-  { key: "created", columnName: "Creado el" },
+export const usuarios: defaultTypes[] = [
+  { key: "id", columnName: "ID", type: "text", disabled: true },
+  {
+    key: "nomusuario",
+    columnName: "Nombre de Usuario",
+    type: "text",
+    disabled: false,
+  },
+  { key: "foto", columnName: "Foto", type: "text", disabled: false },
+  { key: "nombres", columnName: "Nombres", type: "text", disabled: false },
+  { key: "apellidos", columnName: "Apellidos", type: "text", disabled: false },
+  {
+    key: "nacimiento",
+    columnName: "Fecha de Nacimiento",
+    type: "date",
+    disabled: false,
+  },
+  { key: "pais", columnName: "País", type: "text", disabled: false },
+  { key: "correo", columnName: "Correo", type: "email", disabled: false },
+  {
+    key: "password",
+    columnName: "Contraseña",
+    type: "password",
+    disabled: false,
+  },
+  {
+    key: "cofiguracion",
+    columnName: "Configuración",
+    type: "text",
+    disabled: false,
+  },
+  { key: "created_at", columnName: "Creado el", type: "date", disabled: true },
 ];
 
 export type defaultTypes = {
   key: string;
   columnName: string;
+  type?: string;
+  disabled?: boolean;
 };
 
 export function getMappingColumn(path: string) {
@@ -143,8 +287,6 @@ export function getMappingColumn(path: string) {
       return transacciones;
     case "usuarios":
       return usuarios;
-    case "character":
-      return character;
     default:
       return [];
   }
@@ -159,6 +301,5 @@ export default {
   presupuestos,
   transacciones,
   usuarios,
-  character,
   getMappingColumn,
 };

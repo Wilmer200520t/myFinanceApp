@@ -245,3 +245,10 @@
 .p-float-label .rcrs-country:focus {
   border-color: #007ad9;
 }
+
+.loader__center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}

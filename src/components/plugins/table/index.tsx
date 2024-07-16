@@ -232,15 +232,19 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
           emptyMessage="No se encontraron registros" // Mensaje cuando no hay datos
         >
           <Column selectionMode="multiple" exportable={false} />
-          {mappingCol.getMappingColumn(path).map((item) => (
-            <Column
-              key={item.key}
-              field={item.key}
-              header={item.columnName}
-              sortable
-              style={{ minWidth: "12rem" }}
-            />
-          ))}
+          {mappingCol.getMappingColumn(path).map((item) => {
+            if (item.key === "cofiguracion" || item.key === "user_id")
+              return null;
+            return (
+              <Column
+                key={item.key}
+                field={item.key}
+                header={item.columnName}
+                sortable
+                style={{ minWidth: "12rem" }}
+              />
+            );
+          })}
           <Column
             body={actionBodyTemplate}
             exportable={false}
