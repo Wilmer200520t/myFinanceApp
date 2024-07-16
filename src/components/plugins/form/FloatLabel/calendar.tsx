@@ -2,6 +2,7 @@ import { FloatLabel } from "primereact/floatlabel";
 import { Calendar } from "primereact/calendar";
 import { useEffect, useState } from "react";
 import { Nullable } from "primereact/ts-helpers";
+import { addLocale } from "primereact/api";
 
 interface FloatLabelProps {
   id: string;
@@ -26,6 +27,51 @@ export default function FloatCalendar({
     setDate(value ? new Date(value) : null);
   }, [value]);
 
+  addLocale("es", {
+    firstDayOfWeek: 1,
+    dayNames: [
+      "domingo",
+      "lunes",
+      "martes",
+      "miércoles",
+      "jueves",
+      "viernes",
+      "sábado",
+    ],
+    dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
+    dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
+    monthNames: [
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre",
+    ],
+    monthNamesShort: [
+      "ene",
+      "feb",
+      "mar",
+      "abr",
+      "may",
+      "jun",
+      "jul",
+      "ago",
+      "sep",
+      "oct",
+      "nov",
+      "dic",
+    ],
+    today: "Hoy",
+    clear: "Limpiar",
+  });
+
   return (
     <FloatLabel>
       <Calendar
@@ -36,7 +82,8 @@ export default function FloatCalendar({
           setValue(e.value?.toISOString() || "");
         }}
         dateFormat={format}
-        style={{ width: "100%" }}
+        locale="es"
+        className="float__calendar"
         required={obligatory}
       />
       <label htmlFor={id}>{Label}</label>

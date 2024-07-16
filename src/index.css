@@ -10,10 +10,17 @@
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
 }
+.float__calendar {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: small !important;
+  gap: 0.5rem;
+}
 
 .sideBarLeft {
   height: 100vh;
 }
+
 .main-content {
   margin-left: 250px;
   padding: 20px;

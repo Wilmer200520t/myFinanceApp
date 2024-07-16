@@ -88,7 +88,7 @@ export type Transacciones = {
 
 export type Usuarios = {
   id: number;
-  nomusuario?: string;
+  nomusuario: string;
   foto?: string;
   nombres?: string;
   apellidos?: string;

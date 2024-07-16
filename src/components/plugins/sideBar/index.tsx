@@ -12,6 +12,8 @@ import {
 } from "react-icons/hi";
 import Item from "../sideBarItem";
 import { Avatar } from "primereact/avatar";
+import { useEffect, useMemo, useState } from "react";
+import credentials from "../../../auth/credentials";
 
 interface Props {
   hideLog: boolean;
@@ -19,9 +21,23 @@ interface Props {
 }
 
 function Component({ hideLog, sethideLog }: Props) {
-  function logout() {
+  const userCredentials = useMemo(() => new credentials(), []);
+  const [username, setUsername] = useState("");
+  const [nomusuario, setNomusuario] = useState("");
+
+  useEffect(() => {
+    if (userCredentials.isLoged()) {
+      const { nombre, nomusuario } = userCredentials.getUser();
+
+      setUsername(nomusuario);
+      setNomusuario(nombre);
+    }
+  }, [userCredentials]);
+
+  const logout = () => {
+    userCredentials.logOut();
     sethideLog(false);
-  }
+  };
 
   const heighSideBar = hideLog ? ["73%", "20%"] : ["90%", "5%"];
   return (
@@ -66,10 +82,10 @@ function Component({ hideLog, sethideLog }: Props) {
                     shape="circle"
                     className="profile__avatar"
                   />
-                  <h2 className="profile__name">Wilmer Franco</h2>
-                  <h2 className="profile__username">wilmer.zuniga</h2>
+                  <h2 className="profile__name">{username}</h2>
+                  <h2 className="profile__username">{nomusuario}</h2>
                   <Item
-                    text="Sign Out"
+                    text="Cerrar Sesion"
                     url="/login"
                     icon={HiOutlineLogout}
                     onclickAction={logout}
@@ -78,7 +94,9 @@ function Component({ hideLog, sethideLog }: Props) {
               </>
             </>
           ) : (
-            <Item text="Sign In" url="/login" icon={HiOutlineLogin} />
+            window.location.pathname !== "/login" && (
+              <Item text="Iniciar Sesion" url="/login" icon={HiOutlineLogin} />
+            )
           )}
         </Sidebar.ItemGroup>
       </Sidebar.Items>
