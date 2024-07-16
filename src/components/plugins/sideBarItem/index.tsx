@@ -8,11 +8,26 @@ type ItemProps = {
   icon?: IconType;
   label?: string;
   style?: React.CSSProperties;
+  onclickAction?: () => void;
 };
 
-const Item: React.FC<ItemProps> = ({ url, text, icon, label, style }) => {
+const Item: React.FC<ItemProps> = ({
+  url,
+  text,
+  icon,
+  label,
+  style,
+  onclickAction,
+}) => {
   return (
-    <Sidebar.Item href={url} icon={icon} label={label} style={style}>
+    <Sidebar.Item
+      href={url}
+      icon={icon}
+      label={label}
+      style={style}
+      onClick={() => {
+        if (onclickAction) onclickAction();
+      }}>
       {text}
     </Sidebar.Item>
   );

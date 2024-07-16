@@ -9,6 +9,7 @@ import Loader from "../plugins/Loader";
 // Define una interfaz para las props del componente
 interface MainContentProps {
   path: string;
+  logedIn: boolean;
 }
 
 // Define una interfaz para el contenido según la ruta
@@ -16,14 +17,21 @@ interface PathContent {
   [key: string]: JSX.Element;
 }
 
-const MainContent: React.FC<MainContentProps> = ({ path }) => {
+const MainContent: React.FC<MainContentProps> = ({ path, logedIn }) => {
   const [isReady, setIsReady] = useState(false);
+  const [loged, setLoged] = useState(false);
 
   useState(() => {
     setTimeout(() => {
       setIsReady(true);
     }, 300);
+    setLoged(logedIn);
   });
+
+  if (!loged && path !== "login" && path !== "register") {
+    window.location.href = "login";
+    path = "login";
+  }
 
   // Define un objeto que mapee cada ruta a su contenido correspondiente
   const pathContent: PathContent = {
@@ -45,16 +53,7 @@ const MainContent: React.FC<MainContentProps> = ({ path }) => {
         </div>
       </>
     ),
-    default: (
-      <>
-        <div className="table-header">
-          <h1>{configTable(path).subtittle}</h1>
-        </div>
-        <div className="table-container">
-          <DataTableComp path={path} />
-        </div>
-      </>
-    ),
+    default: <FormLogin />,
   };
 
   // Obtén el contenido según la ruta, o utiliza el contenido predeterminado si no se encuentra la ruta específica

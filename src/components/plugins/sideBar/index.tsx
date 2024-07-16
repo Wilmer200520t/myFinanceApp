@@ -11,6 +11,7 @@ import {
   HiOutlineLogout,
 } from "react-icons/hi";
 import Item from "../sideBarItem";
+import { Avatar } from "primereact/avatar";
 
 interface Props {
   hideLog: boolean;
@@ -18,15 +19,20 @@ interface Props {
 }
 
 function Component({ hideLog, sethideLog }: Props) {
+  function logout() {
+    sethideLog(false);
+  }
+
+  const heighSideBar = hideLog ? ["73%", "20%"] : ["90%", "5%"];
   return (
     <Sidebar aria-label="Roboto" className="sideBarLeft">
       <Sidebar.Logo
-        href="#"
+        href="/dashboard"
         img="..//..//..//..//public/icon_blue.png"
         imgAlt="Flowbite logo">
         myFinance
       </Sidebar.Logo>
-      <Sidebar.Items style={{ height: "90%" }}>
+      <Sidebar.Items style={{ height: heighSideBar[0] }}>
         <Sidebar.ItemGroup>
           <Item text="Dashboard" url="/dashboard" icon={HiChartPie} />
           <Item text="Cuentas" url="/cuentas" icon={HiOutlineBriefcase} />
@@ -48,10 +54,29 @@ function Component({ hideLog, sethideLog }: Props) {
           />
         </Sidebar.ItemGroup>
       </Sidebar.Items>
-      <Sidebar.Items style={{ height: "5%" }}>
+      <Sidebar.Items style={{ height: heighSideBar[1] }}>
         <Sidebar.ItemGroup>
           {hideLog ? (
-            <Item text="Sign Out" url="/logout" icon={HiOutlineLogout} />
+            <>
+              <>
+                <div className="profile">
+                  <Avatar
+                    image="..//..//..//..//public/avatar.svg"
+                    size="xlarge"
+                    shape="circle"
+                    className="profile__avatar"
+                  />
+                  <h2 className="profile__name">Wilmer Franco</h2>
+                  <h2 className="profile__username">wilmer.zuniga</h2>
+                  <Item
+                    text="Sign Out"
+                    url="/login"
+                    icon={HiOutlineLogout}
+                    onclickAction={logout}
+                  />
+                </div>
+              </>
+            </>
           ) : (
             <Item text="Sign In" url="/login" icon={HiOutlineLogin} />
           )}

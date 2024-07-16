@@ -17,7 +17,7 @@ function App() {
         <SideBar hideLog={disableLogin} sethideLog={setDisableLogin} />
       </div>
       <div className="main-content">
-        <Card>{<MainContent path={path} />}</Card>
+        <Card>{<MainContent path={path} logedIn={false} />}</Card>
       </div>
     </div>
   );
