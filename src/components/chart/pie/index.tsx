@@ -8,29 +8,35 @@ export default function PieChartDemo() {
   useEffect(() => {
     const documentStyle = getComputedStyle(document.documentElement);
     const data = {
-      labels: ["A", "B", "C"],
+      labels: ["Presupuesto", "Gastos"],
       datasets: [
         {
-          data: [540, 325, 702],
+          data: [540, 325],
           backgroundColor: [
-            documentStyle.getPropertyValue("--blue-500"),
-            documentStyle.getPropertyValue("--yellow-500"),
             documentStyle.getPropertyValue("--green-500"),
+            documentStyle.getPropertyValue("--red-500"),
           ],
           hoverBackgroundColor: [
-            documentStyle.getPropertyValue("--blue-400"),
-            documentStyle.getPropertyValue("--yellow-400"),
             documentStyle.getPropertyValue("--green-400"),
+            documentStyle.getPropertyValue("--red-400"),
           ],
         },
       ],
     };
     const options = {
-      aspectRatio: 1.5,
+      aspectRatio: 1,
       plugins: {
         legend: {
           labels: {
             usePointStyle: true,
+          },
+        },
+        title: {
+          display: true,
+          text: "Presupuesto vs Gastos del Mes",
+          color: "#333",
+          font: {
+            size: 16,
           },
         },
       },
@@ -41,7 +47,9 @@ export default function PieChartDemo() {
   }, []);
 
   return (
-    <div className="card flex justify-content-center">
+    <div
+      className="card flex justify-content-center"
+      style={{ width: "100%", height: "100%", paddingBottom: "1rem" }}>
       <Chart
         type="pie"
         data={chartData}

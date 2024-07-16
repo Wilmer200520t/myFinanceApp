@@ -13,19 +13,26 @@ export default function VerticalBarDemo() {
     );
     const surfaceBorder = documentStyle.getPropertyValue("--surface-border");
     const data = {
-      labels: ["January", "February", "March", "April", "May", "June", "July"],
+      labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4", "Semana 5"],
       datasets: [
         {
-          label: "My First dataset",
+          label: "Ingresos",
+
           backgroundColor: documentStyle.getPropertyValue("--blue-500"),
           borderColor: documentStyle.getPropertyValue("--blue-500"),
-          data: [65, 59, 80, 81, 56, 55, 40],
+          data: [65, 59, 80, 81, 56],
         },
         {
-          label: "My Second dataset",
-          backgroundColor: documentStyle.getPropertyValue("--pink-500"),
-          borderColor: documentStyle.getPropertyValue("--pink-500"),
-          data: [28, 48, 40, 19, 86, 27, 90],
+          label: "Gastos",
+          backgroundColor: documentStyle.getPropertyValue("--red-500"),
+          borderColor: documentStyle.getPropertyValue("--red-500"),
+          data: [28, 48, 40, 19, 86],
+        },
+        {
+          label: "Presupuestos",
+          backgroundColor: documentStyle.getPropertyValue("--green-500"),
+          borderColor: documentStyle.getPropertyValue("--green-500"),
+          data: [25, 60, 70, 80, 50],
         },
       ],
     };

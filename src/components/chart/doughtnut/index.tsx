@@ -8,26 +8,34 @@ export default function DoughnutChartDemo() {
   useEffect(() => {
     const documentStyle = getComputedStyle(document.documentElement);
     const data = {
-      labels: ["A", "B", "C"],
+      labels: ["Ingresos", "Gastos"],
       datasets: [
         {
-          data: [300, 50, 100],
+          data: [300, 50],
           backgroundColor: [
             documentStyle.getPropertyValue("--blue-500"),
-            documentStyle.getPropertyValue("--yellow-500"),
-            documentStyle.getPropertyValue("--green-500"),
+            documentStyle.getPropertyValue("--red-500"),
           ],
           hoverBackgroundColor: [
             documentStyle.getPropertyValue("--blue-400"),
-            documentStyle.getPropertyValue("--yellow-400"),
-            documentStyle.getPropertyValue("--green-400"),
+            documentStyle.getPropertyValue("--red-400"),
           ],
         },
       ],
     };
     const options = {
-      aspectRatio: 1.5,
+      aspectRatio: 1,
       cutout: "60%",
+      plugins: {
+        title: {
+          display: true,
+          text: "Ingresos vs Gastos del Mes",
+          color: "#333",
+          font: {
+            size: 16,
+          },
+        },
+      },
     };
 
     setChartData(data);
@@ -35,7 +43,9 @@ export default function DoughnutChartDemo() {
   }, []);
 
   return (
-    <div className="card flex justify-content-center">
+    <div
+      className="card flex justify-content-center"
+      style={{ width: "100%", height: "100%", paddingBottom: "2.5rem" }}>
       <Chart
         type="doughnut"
         data={chartData}

@@ -13,23 +13,44 @@ export default function MultiAxisDemo() {
     );
     const surfaceBorder = documentStyle.getPropertyValue("--surface-border");
     const data = {
-      labels: ["January", "February", "March", "April", "May", "June", "July"],
+      labels: [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Setiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre",
+      ],
       datasets: [
         {
-          label: "Dataset 1",
+          label: "Gastos",
           fill: false,
-          borderColor: documentStyle.getPropertyValue("--blue-500"),
+          borderColor: documentStyle.getPropertyValue("--red-500"),
           yAxisID: "y",
           tension: 0.4,
-          data: [65, 59, 80, 81, 56, 55, 10],
+          data: [65, 59, 80, 81, 56, 55, 10, 0, 0, 0, 0, 0],
         },
         {
-          label: "Dataset 2",
+          label: "Ingresos",
+          fill: false,
+          borderColor: documentStyle.getPropertyValue("--blue-500"),
+          yAxisID: "y1",
+          tension: 0.4,
+          data: [28, 48, 40, 19, 86, 27, 90, 0, 0, 0, 0, 0],
+        },
+        {
+          label: "Presupuestos",
           fill: false,
           borderColor: documentStyle.getPropertyValue("--green-500"),
           yAxisID: "y1",
           tension: 0.4,
-          data: [28, 48, 40, 19, 86, 27, 90],
+          data: [27, 49, 44, 25, 90, 37, 25, 0, 0, 0, 0, 0],
         },
       ],
     };
