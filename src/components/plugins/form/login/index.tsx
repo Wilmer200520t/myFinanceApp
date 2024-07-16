@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import FloatLabel from "../FloatLabel";
 
@@ -17,15 +16,14 @@ function FormLogin(): JSX.Element {
   return (
     <>
       <div className="login-container">
-        <h1 className="login-title">Iniciar sesión</h1>
         <div className="card login-content">
+          <h1 className="login-title">Iniciar sesión</h1>
           <div className="p-field">
             <FloatLabel
               id="username"
               Label="Usuario"
               value={username}
               setValue={setUsername}
-              classChild="p-inputtext-lg"
             />
           </div>
           <div className="p-field">
@@ -35,7 +33,6 @@ function FormLogin(): JSX.Element {
               value={password}
               setValue={setPassword}
               type="password"
-              classChild="p-inputtext-lg"
             />
           </div>
           <Button
@@ -43,6 +40,14 @@ function FormLogin(): JSX.Element {
             onClick={handleLogin}
             className="p-button-lg p-d-block p-mt-4"
           />
+          <div className="login__content__footer">
+            <p>
+              ¿No tienes cuenta?{" "}
+              <a href="/register" className="login__content__footer__link">
+                Regístrate
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </>

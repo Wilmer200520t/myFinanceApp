@@ -1,9 +1,23 @@
-import { ChangeEventHandler, useState } from "react";
-import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
+import FloatLabel from "../FloatLabel";
+import FloatCalendar from "../FloatLabel/calendar";
+import { useState } from "react";
+import DialogComp from "../../Dialog";
 
 function FormRegister(): JSX.Element {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    id: number;
+    nomusuario: string;
+    foto: string;
+    nombres: string;
+    apellidos: string;
+    nacimiento: Date | null;
+    pais: string;
+    correo: string;
+    password: string;
+    passwordrepeat: string;
+  }>({
+    id: 0,
     nomusuario: "",
     foto: "",
     nombres: "",
@@ -12,45 +26,145 @@ function FormRegister(): JSX.Element {
     pais: "",
     correo: "",
     password: "",
-    configuracion: "",
+    passwordrepeat: "",
   });
 
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [message, setMessage] = useState<{
+    tittle: string;
+    message: string;
+  }>({
+    tittle: "Error",
+    message: "",
+  });
 
   const handleRegister = () => {
-    // Lógica para registrar al usuario
+    if (formData.password !== formData.passwordrepeat) {
+      setShowDialog(true);
+      setMessage({
+        tittle: "Error",
+        message: "Las contraseñas no coinciden",
+      });
+
+      return;
+    }
+    if (
+      formData.nomusuario === "" ||
+      formData.nombres === "" ||
+      formData.apellidos === "" ||
+      formData.nacimiento === null ||
+      formData.pais === "" ||
+      formData.correo === "" ||
+      formData.password === ""
+    ) {
+      setShowDialog(true);
+      setMessage({
+        tittle: "Error",
+        message: "Todos los campos son obligatorios",
+      });
+
+      return;
+    }
     console.log("Form Data:", formData);
-    // Aquí puedes implementar la lógica de registro
   };
 
   return (
     <div className="register-container">
-      <div className="register-content">
-        <h2>Registro</h2>
+      <div className="card register-content">
+        <h1 className="login-title">Registro</h1>
         <div className="p-field">
-          <label htmlFor="nomusuario">Username</label>
-          <InputText
+          <FloatLabel
             id="nomusuario"
-            name="nomusuario"
+            Label="Nombre de usuario"
             value={formData.nomusuario}
-            onChange={handleChange as ChangeEventHandler<HTMLInputElement>}
+            setValue={(value) =>
+              setFormData({ ...formData, nomusuario: value })
+            }
+            obligatory={true}
           />
         </div>
         <div className="p-field">
-          <label htmlFor="password">Password</label>
-          <InputText
-            id="password"
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange as ChangeEventHandler<HTMLInputElement>}
+          <FloatLabel
+            id="nombres"
+            Label="Nombres"
+            value={formData.nombres}
+            setValue={(value) => setFormData({ ...formData, nombres: value })}
+            obligatory={true}
           />
         </div>
-        <Button label="Register" onClick={handleRegister} />
+        <div className="p-field">
+          <FloatLabel
+            id="apellidos"
+            Label="Apellidos"
+            value={formData.apellidos}
+            setValue={(value) => setFormData({ ...formData, apellidos: value })}
+            obligatory={true}
+          />
+        </div>
+        <div className="p-field">
+          <FloatCalendar
+            id="nacimiento"
+            Label="Fecha de Nacimiento"
+            value={formData.nacimiento?.toDateString() || ""}
+            setValue={(value) =>
+              setFormData({ ...formData, nacimiento: new Date(value) })
+            }
+            format="dd/mm/yy"
+            obligatory={true}
+          />
+        </div>
+        <div className="p-field">
+          <FloatLabel
+            id="pais"
+            Label="País"
+            value={formData.pais}
+            setValue={(value) => setFormData({ ...formData, pais: value })}
+            type="dropdown"
+            obligatory={true}
+          />
+        </div>
+        <div className="p-field">
+          <FloatLabel
+            id="correo"
+            Label="Correo Electrónico"
+            value={formData.correo}
+            setValue={(value) => setFormData({ ...formData, correo: value })}
+            obligatory={true}
+          />
+        </div>
+        <div className="p-field">
+          <FloatLabel
+            id="password"
+            Label="Contraseña"
+            value={formData.password}
+            setValue={(value) => setFormData({ ...formData, password: value })}
+            type="password"
+            obligatory={true}
+          />
+        </div>
+        <div className="p-field">
+          <FloatLabel
+            id="passwordrepeat"
+            Label="Repite la Contraseña"
+            value={formData.passwordrepeat}
+            setValue={(value) =>
+              setFormData({ ...formData, passwordrepeat: value })
+            }
+            type="password"
+            obligatory={true}
+          />
+        </div>
+        <Button label="Registrate" onClick={handleRegister} />
+        <div className="login__content__footer">
+          <p>
+            ¿Ya tienes cuenta?{" "}
+            <a href="/login" className="login__content__footer__link">
+              Iniciar session
+            </a>
+          </p>
+        </div>
       </div>
+      <DialogComp message={message} show={showDialog} setShow={setShowDialog} />
     </div>
   );
 }

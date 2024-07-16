@@ -11,23 +11,23 @@ function Dashboard() {
       <div className="dash_header">
         <div>
           <AnalyticCard
-            icon="pi pi-users"
+            icon="pi pi-dollar"
             value="21.2k"
-            description="Total followers"
+            description="Total Presupuesto"
           />
         </div>
         <div>
           <AnalyticCard
-            icon="pi pi-chart-line"
+            icon="pi pi-dollar"
             value="15.4k"
-            description="Monthly views"
+            description="Total Gastos"
           />
         </div>
         <div>
           <AnalyticCard
             icon="pi pi-dollar"
             value="$8.9k"
-            description="Revenue"
+            description="Total Ingresos"
           />
         </div>
       </div>
