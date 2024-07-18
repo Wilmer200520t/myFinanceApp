@@ -3,6 +3,8 @@ import { Button } from "primereact/button";
 import FloatLabel from "../FloatLabel";
 import credentials from "../../../../auth/credentials";
 import DialogComp from "../../Dialog";
+import { userLogin } from "../../../../data/fetchData";
+import { Usuarios } from "../../../../data/dataTypes";
 
 function FormLogin(): JSX.Element {
   const [username, setUsername] = useState("");
@@ -11,13 +13,13 @@ function FormLogin(): JSX.Element {
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [message, setMessage] = useState<{
     tittle: string;
-    message: string;
+    message: string | Usuarios;
   }>({
     tittle: "Error",
     message: "",
   });
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (username === "" || password === "") {
       setShowDialog(true);
       setMessage({
@@ -26,13 +28,29 @@ function FormLogin(): JSX.Element {
       });
       return;
     } else {
-      userCredentials.logIn({
-        id: 0,
-        nomusuario: username,
-        nombre: "Wilmer Franco",
-        correo: "Wilmer.2030@hotmail.com",
+      const loginResult = userLogin({ username, password });
+
+      loginResult.then((res) => {
+        if (res.error) {
+          setShowDialog(true);
+          setMessage({
+            tittle: "Error",
+            message: res.message,
+          });
+        } else {
+          const { id, nomusuario, nombre, correo } = res.message[0];
+          if (res.message === "Usuario no encontrado" || id === undefined) {
+            setShowDialog(true);
+            setMessage({
+              tittle: "Error",
+              message: "Usuario no encontrado",
+            });
+          } else {
+            userCredentials.logIn({ id, nomusuario, nombre, correo });
+            window.location.href = "/dashboard";
+          }
+        }
       });
-      window.location.href = "/dashboard";
     }
   };
 

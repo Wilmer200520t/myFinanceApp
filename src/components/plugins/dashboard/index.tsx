@@ -6,27 +6,31 @@ import DouIncomeExch from "../../chart/doughtnut";
 import AnalyticCard from "../../chart/analyticCard";
 
 function Dashboard() {
+  const Presupuesto = 21200;
+  const Gastos = 15400;
+  const Ingresos = 8900;
+
   return (
     <div className="dash">
       <div className="dash_header">
         <div>
           <AnalyticCard
             icon="pi pi-dollar"
-            value="21.2k"
+            value={`S/. ${Presupuesto.toString()}`}
             description="Total Presupuesto"
           />
         </div>
         <div>
           <AnalyticCard
             icon="pi pi-dollar"
-            value="15.4k"
+            value={`S/. ${Gastos.toString()}`}
             description="Total Gastos"
           />
         </div>
         <div>
           <AnalyticCard
             icon="pi pi-dollar"
-            value="$8.9k"
+            value={`S/. ${Ingresos.toString()}`}
             description="Total Ingresos"
           />
         </div>

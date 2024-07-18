@@ -62,7 +62,12 @@ export const cuentas: defaultTypes[] = [
     type: "text",
     disabled: false,
   },
-  { key: "balance", columnName: "number", type: "number", disabled: false },
+  {
+    key: "balance",
+    columnName: "Balance Actual",
+    type: "number",
+    disabled: false,
+  },
   { key: "moneda", columnName: "Moneda", type: "text", disabled: false },
   { key: "created_at", columnName: "Creado el", type: "date", disabled: true },
 ];
@@ -120,7 +125,7 @@ export const ingresos: defaultTypes[] = [
     key: "ejericio_id",
     columnName: "Ejercicio ID",
     type: "text",
-    disabled: true,
+    disabled: false,
   },
   {
     key: "ctadestino",
@@ -291,6 +296,30 @@ export function getMappingColumn(path: string) {
       return [];
   }
 }
+
+export function getTableName(path: string) {
+  switch (path) {
+    case "usuarios":
+      return "fusuarios";
+    case "cierreMensual":
+      return "cierre_mensual";
+    case "cuentas":
+      return "fcuentas";
+    case "deudas":
+      return "fdeudas";
+    case "ejercicio":
+      return "fejercicio";
+    case "ingresos":
+      return "fingresos";
+    case "inversion":
+      return "finversion";
+    case "presupuestos":
+      return "fpresupuestos";
+    case "transacciones":
+      return "ftransacciones";
+  }
+}
+
 export default {
   cierreMensual,
   cuentas,

@@ -3,6 +3,7 @@ import FloatLabel from "../FloatLabel";
 import FloatCalendar from "../FloatLabel/calendar";
 import { useState } from "react";
 import DialogComp from "../../Dialog";
+import { userRegister } from "../../../../data/fetchData";
 
 function FormRegister(): JSX.Element {
   const [formData, setFormData] = useState<{
@@ -11,7 +12,7 @@ function FormRegister(): JSX.Element {
     foto: string;
     nombres: string;
     apellidos: string;
-    nacimiento: Date | null;
+    nacimiento: Date | undefined;
     pais: string;
     correo: string;
     password: string;
@@ -22,7 +23,7 @@ function FormRegister(): JSX.Element {
     foto: "",
     nombres: "",
     apellidos: "",
-    nacimiento: null,
+    nacimiento: undefined,
     pais: "",
     correo: "",
     password: "",
@@ -48,6 +49,7 @@ function FormRegister(): JSX.Element {
 
       return;
     }
+
     if (
       formData.nomusuario === "" ||
       formData.nombres === "" ||
@@ -65,7 +67,38 @@ function FormRegister(): JSX.Element {
 
       return;
     }
-    console.log("Form Data:", formData);
+
+    const response = userRegister(formData);
+
+    response.then((res) => {
+      if (res.error) {
+        setShowDialog(true);
+        setMessage({
+          tittle: "Error",
+          message: res.message,
+        });
+        return;
+      } else {
+        setShowDialog(true);
+        setMessage({
+          tittle: "Registro",
+          message: res.message,
+        });
+
+        setFormData({
+          id: 0,
+          nomusuario: "",
+          foto: "",
+          nombres: "",
+          apellidos: "",
+          nacimiento: undefined,
+          pais: "",
+          correo: "",
+          password: "",
+          passwordrepeat: "",
+        });
+      }
+    });
   };
 
   return (

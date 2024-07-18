@@ -1,22 +1,34 @@
-import { AllTypesRow } from "./dataTypes";
+import { AllTypesRow, Usuarios } from "./dataTypes";
+import UserCrentials from "../auth/credentials";
+import { getTableName } from "./mappigColumns";
 
-const BASE_URL = import.meta.env.VITE_BASE_URL_API;
+const BASE_URL = `/api/sql`;
 
 export type responseType = {
   error: boolean;
   message: string;
 };
 
+const userCredentials = new UserCrentials();
+const user = userCredentials.getUser();
+const user_id = user?.id || 1;
+const conditionUser = ` WHERE user_id = ${user_id}`;
+
 export async function getData(
   path: string,
   limit?: number
 ): Promise<AllTypesRow[]> {
   try {
-    const response = await fetch(`${BASE_URL}/${path}`, {
-      method: "GET",
+    const limitQuery = limit ? ` LIMIT ${limit}` : "";
+    const tabname = getTableName(path);
+    const query = `SELECT * FROM ${tabname} ${conditionUser} ${limitQuery}`;
+
+    const response = await fetch(`${BASE_URL}/get`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({ query }),
     });
 
     if (!response.ok) {
@@ -31,14 +43,14 @@ export async function getData(
     }
 
     const json = await response.json();
-    const data: AllTypesRow[] = json.results || json;
+    const data: AllTypesRow[] = json;
 
     if (!Array.isArray(data)) {
       console.error("Error: Data is not an array", data);
       return [];
     }
 
-    return data.slice(0, limit || data.length);
+    return data;
   } catch (error) {
     console.error("Error:", error);
     return [];
@@ -51,19 +63,60 @@ export async function createData(
   limit?: number
 ): Promise<responseType | AllTypesRow[]> {
   try {
-    const response = await fetch(`${BASE_URL}/${path}`, {
+    const tabname = getTableName(path);
+
+    if (data.id !== undefined) {
+      delete data.id;
+    }
+
+    if (data.user_id !== undefined) {
+      data.user_id = user_id;
+    }
+
+    if (data.created_at !== undefined) {
+      data.created_at = "NOW()";
+    }
+
+    const query = `INSERT INTO ${tabname} (${Object.keys(data).join(
+      ", "
+    )}) VALUES (${Object.values(data)
+      .map((value) => {
+        if (value === "NOW()" || value === user_id) {
+          return value;
+        } else {
+          return `'${value}'`;
+        }
+      })
+
+      .join(", ")})`;
+
+    const response = await fetch(BASE_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ query }),
     });
 
-    const newData = await getData(path, limit);
-
-    if (!response.ok || !newData) {
-      throw new Error(`Failed to update data: ${response.statusText}`);
+    if (!response.ok) {
+      return {
+        error: true,
+        message: response.statusText,
+      };
     }
+
+    const serverResponse = await response.json();
+
+    if (serverResponse.err) {
+      const message = serverResponse.err;
+
+      return {
+        error: true,
+        message: message.sqlMessage,
+      };
+    }
+
+    const newData = await getData(path, limit);
 
     return newData;
   } catch (error) {
@@ -78,24 +131,49 @@ export async function updateData(
   path: string,
   id: number,
   data: AllTypesRow
-): Promise<responseType> {
+): Promise<responseType | AllTypesRow[]> {
   try {
-    const response = await fetch(`${BASE_URL}/${path}/${id}`, {
+    const tabname = getTableName(path);
+
+    if (data.id !== undefined) {
+      delete data.id;
+      if (data.created_at) delete data.created_at;
+    }
+
+    const query = `UPDATE ${tabname} SET ${Object.keys(data)
+      .map((key) => `${key} = '${data[key]}'`)
+      .join(", ")} WHERE id = ${id}`;
+
+    console.log(query);
+    const response = await fetch(BASE_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ query }),
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to update data: ${response.statusText}`);
+      return {
+        error: true,
+        message: response.statusText,
+      };
     }
 
-    return {
-      error: false,
-      message: String(id),
-    };
+    const serverResponse = await response.json();
+
+    if (serverResponse.err) {
+      const message = serverResponse.err;
+
+      return {
+        error: true,
+        message: message.sqlMessage,
+      };
+    }
+
+    const newData = await getData(path);
+
+    return newData;
   } catch (error) {
     return {
       error: true,
@@ -109,17 +187,38 @@ export async function deleteData(
   id: number
 ): Promise<responseType> {
   try {
-    const response = await fetch(`${BASE_URL}/${path}/${id}`, {
+    const tabname = getTableName(path);
+    const query = `DELETE FROM ${tabname} WHERE id = ${id}`;
+
+    const response = await fetch(BASE_URL, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query }),
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to delete: ${response.statusText}`);
+      return {
+        error: true,
+        message: response.statusText,
+      };
+    }
+
+    const serverResponse = await response.json();
+
+    if (serverResponse.err) {
+      const message = serverResponse.err;
+
+      return {
+        error: true,
+        message: message.sqlMessage,
+      };
     }
 
     return {
       error: false,
-      message: "Actualizado correctamente",
+      message: "Eliminado correctamente",
     };
   } catch (error) {
     return {
@@ -129,23 +228,38 @@ export async function deleteData(
   }
 }
 
-export async function userRegister(data: AllTypesRow): Promise<responseType> {
+export async function userRegister(data: Usuarios): Promise<responseType> {
   try {
-    const response = await fetch(`${BASE_URL}/register`, {
+    console.log(BASE_URL);
+
+    const nacimiento = data.nacimiento?.toISOString().split("T")[0];
+
+    const query = `
+    INSERT INTO fusuarios(nomusuario, nombres, apellidos, nacimiento, pais, correo, password, cofiguracion, created_at) 
+    VALUES ('${data.nomusuario}', '${data.nombres}', 
+            '${data.apellidos}', '${nacimiento}', 
+            '${data.pais}', '${data.correo}', '${data.password}',
+            '{"idioma": "es", "tema": "oscuro"}', NOW())
+    `;
+
+    const response = await fetch(BASE_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ query }),
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to register user: ${response.statusText}`);
+      return {
+        error: true,
+        message: response.statusText,
+      };
     }
 
     return {
       error: false,
-      message: "Actualizado correctamente",
+      message: "Usuario creado correctamente",
     };
   } catch (error) {
     return {
@@ -160,21 +274,26 @@ export async function userLogin(data: {
   password: string;
 }): Promise<responseType> {
   try {
-    const response = await fetch(`${BASE_URL}/login`, {
+    const query = `SELECT fusuarios.* FROM fusuarios WHERE (nomusuario = '${data.username}' or correo = '${data.username}') AND password = '${data.password}' LIMIT 1 `;
+
+    const response = await fetch(`${BASE_URL}/get`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ query }),
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to login: ${response.statusText}`);
+      return {
+        error: true,
+        message: response.statusText,
+      };
     }
 
     return {
       error: false,
-      message: "Actualizado correctamente",
+      message: await response.json(),
     };
   } catch (error) {
     return {

@@ -5,7 +5,13 @@ import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { AllTypesRow } from "../../../data/dataTypes";
-import { createData, getData, responseType } from "../../../data/fetchData";
+import {
+  createData,
+  getData,
+  responseType,
+  updateData,
+  deleteData as deleteRow,
+} from "../../../data/fetchData";
 import mappingCol from "../../../data/mappigColumns";
 import dataDefault from "../../../data/defaultsColumnData";
 import ModalTemplate from "./modal";
@@ -36,9 +42,13 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
     let isMounted = true;
 
     const fetchDataAsync = async () => {
-      const data = await getData(path);
-      if (isMounted) {
-        setArrayData(Array.isArray(data) ? data : []);
+      try {
+        const data = await getData(path);
+        if (isMounted) {
+          setArrayData(Array.isArray(data) ? data : []);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -54,30 +64,59 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
     setDataDialog(false);
     setData(emptyData);
 
-    try {
-      const response: AllTypesRow[] | responseType = await createData(
-        path,
-        data
-      );
+    if (data.id !== 0) {
+      try {
+        const response: AllTypesRow[] | responseType = await updateData(
+          path,
+          data.id || 0,
+          data
+        );
 
-      if ((response as responseType).message) {
-        throw new Error((response as responseType).message);
+        if ((response as responseType).message) {
+          throw new Error((response as responseType).message);
+        }
+
+        setArrayData(response as AllTypesRow[]);
+        toast.current?.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "Actualizado correctamente",
+          life: 3000,
+        });
+      } catch (error: string | unknown) {
+        toast.current?.show({
+          severity: "error",
+          summary: "Error",
+          detail: error instanceof Error ? error.message : "Unknown error",
+          life: 3000,
+        });
       }
+    } else {
+      try {
+        const response: AllTypesRow[] | responseType = await createData(
+          path,
+          data
+        );
 
-      setArrayData(response as AllTypesRow[]);
-      toast.current?.show({
-        severity: "success",
-        summary: "Successful",
-        detail: "Actualizado correctamente",
-        life: 3000,
-      });
-    } catch (error: string | unknown) {
-      toast.current?.show({
-        severity: "error",
-        summary: "Error",
-        detail: error instanceof Error ? error.message : "Unknown error",
-        life: 3000,
-      });
+        if ((response as responseType).message) {
+          throw new Error((response as responseType).message);
+        }
+
+        setArrayData(response as AllTypesRow[]);
+        toast.current?.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "Creado correctamente",
+          life: 3000,
+        });
+      } catch (error: string | unknown) {
+        toast.current?.show({
+          severity: "error",
+          summary: "Error",
+          detail: error instanceof Error ? error.message : "Unknown error",
+          life: 3000,
+        });
+      }
     }
   };
 
@@ -97,14 +136,28 @@ const DataTableComp: React.FC<DataTableCompProps> = ({ path }) => {
   };
 
   const deleteData = () => {
-    setArrayData(arrayData.filter((item) => item !== data));
-    setDeleteDataDialog(false);
-    setData(emptyData);
-    toast.current?.show({
-      severity: "success",
-      summary: "Successful",
-      detail: "Eliminado correctamente",
-      life: 3000,
+    const response = deleteRow(path, data.id || 0);
+
+    response.then((res) => {
+      if (res.error) {
+        toast.current?.show({
+          severity: "error",
+          summary: "Error",
+          detail: res.message,
+          life: 3000,
+        });
+        return;
+      } else {
+        setArrayData(arrayData.filter((item) => item !== data));
+        toast.current?.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "Eliminado correctamente",
+          life: 3000,
+        });
+      }
+      setDeleteDataDialog(false);
+      setData(emptyData);
     });
   };
 

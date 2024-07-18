@@ -1,5 +1,5 @@
 export type CierreMensual = {
-  id: number;
+  id?: number;
   user_id?: number;
   ejercicio_id?: number;
   inversiones?: number;
@@ -11,7 +11,7 @@ export type CierreMensual = {
 };
 
 export type Cuentas = {
-  id: number;
+  id?: number;
   user_id?: number;
   banco?: string;
   comision?: number;
@@ -23,7 +23,7 @@ export type Cuentas = {
 };
 
 export type Deudas = {
-  id: number;
+  id?: number;
   user_id?: number;
   estado?: string;
   ctadestino?: number;
@@ -38,13 +38,13 @@ export type Deudas = {
 };
 
 export type Ejercicio = {
-  id: number;
+  id?: number;
   ejercicio: number;
   periodo: number;
 };
 
 export type Ingresos = {
-  id: number;
+  id?: number;
   user_id?: number;
   ejericio_id?: number;
   ctadestino?: number;
@@ -53,7 +53,7 @@ export type Ingresos = {
 };
 
 export type Inversion = {
-  id: number;
+  id?: number;
   user_id?: number;
   tpinvers?: string;
   monto?: number;
@@ -64,7 +64,7 @@ export type Inversion = {
 };
 
 export type Presupuestos = {
-  id: number;
+  id?: number;
   user_id?: number;
   ejericio_id?: number;
   title?: string;
@@ -76,7 +76,7 @@ export type Presupuestos = {
 };
 
 export type Transacciones = {
-  id: number;
+  id?: number;
   account_id?: number;
   ejericio_id?: number;
   monto?: number;
@@ -87,7 +87,7 @@ export type Transacciones = {
 };
 
 export type Usuarios = {
-  id: number;
+  id?: number;
   nomusuario: string;
   foto?: string;
   nombres?: string;
