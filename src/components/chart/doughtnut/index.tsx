@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react";
 import { Chart } from "primereact/chart";
 
-export default function DoughnutChartDemo() {
+interface VerticalBarDemoProps {
+  data: {
+    ingresos: number;
+    gastos: number;
+  };
+}
+
+export default function DoughnutChartDemo({ data }: VerticalBarDemoProps) {
+  const { ingresos, gastos } = data;
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
 
@@ -11,7 +19,7 @@ export default function DoughnutChartDemo() {
       labels: ["Ingresos", "Gastos"],
       datasets: [
         {
-          data: [300, 50],
+          data: [ingresos, gastos],
           backgroundColor: [
             documentStyle.getPropertyValue("--blue-500"),
             documentStyle.getPropertyValue("--red-500"),
@@ -40,7 +48,7 @@ export default function DoughnutChartDemo() {
 
     setChartData(data);
     setChartOptions(options);
-  }, []);
+  }, [gastos, ingresos]);
 
   return (
     <div

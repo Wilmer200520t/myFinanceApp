@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react";
 import { Chart } from "primereact/chart";
+interface VerticalBarDemoProps {
+  data: {
+    ingresos: number[];
+    gastos: number[];
+    presupuestos: number[];
+  };
+}
 
-export default function MultiAxisDemo() {
+export default function MultiAxisDemo({ data }: VerticalBarDemoProps) {
+  const { ingresos, gastos, presupuestos } = data;
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
 
@@ -34,7 +42,7 @@ export default function MultiAxisDemo() {
           borderColor: documentStyle.getPropertyValue("--red-500"),
           yAxisID: "y",
           tension: 0.4,
-          data: [65, 59, 80, 81, 56, 55, 10, 0, 0, 0, 0, 0],
+          data: gastos,
         },
         {
           label: "Ingresos",
@@ -42,7 +50,7 @@ export default function MultiAxisDemo() {
           borderColor: documentStyle.getPropertyValue("--blue-500"),
           yAxisID: "y1",
           tension: 0.4,
-          data: [28, 48, 40, 19, 86, 27, 90, 0, 0, 0, 0, 0],
+          data: ingresos,
         },
         {
           label: "Presupuestos",
@@ -50,7 +58,7 @@ export default function MultiAxisDemo() {
           borderColor: documentStyle.getPropertyValue("--green-500"),
           yAxisID: "y1",
           tension: 0.4,
-          data: [27, 49, 44, 25, 90, 37, 25, 0, 0, 0, 0, 0],
+          data: presupuestos,
         },
       ],
     };
@@ -102,7 +110,7 @@ export default function MultiAxisDemo() {
 
     setChartData(data);
     setChartOptions(options);
-  }, []);
+  }, [ingresos, gastos, presupuestos]);
 
   return (
     <div className="card">

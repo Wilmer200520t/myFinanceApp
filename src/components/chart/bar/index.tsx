@@ -1,7 +1,16 @@
 import { useState, useEffect } from "react";
 import { Chart } from "primereact/chart";
 
-export default function VerticalBarDemo() {
+interface VerticalBarDemoProps {
+  data: {
+    ingresos: number[];
+    gastos: number[];
+    presupuestos: number[];
+  };
+}
+
+export default function VerticalBarDemo({ data }: VerticalBarDemoProps) {
+  const { ingresos, gastos, presupuestos } = data;
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
 
@@ -20,19 +29,19 @@ export default function VerticalBarDemo() {
 
           backgroundColor: documentStyle.getPropertyValue("--blue-500"),
           borderColor: documentStyle.getPropertyValue("--blue-500"),
-          data: [65, 59, 80, 81, 56],
+          data: ingresos,
         },
         {
           label: "Gastos",
           backgroundColor: documentStyle.getPropertyValue("--red-500"),
           borderColor: documentStyle.getPropertyValue("--red-500"),
-          data: [28, 48, 40, 19, 86],
+          data: gastos,
         },
         {
           label: "Presupuestos",
           backgroundColor: documentStyle.getPropertyValue("--green-500"),
           borderColor: documentStyle.getPropertyValue("--green-500"),
-          data: [25, 60, 70, 80, 50],
+          data: presupuestos,
         },
       ],
     };
@@ -73,7 +82,7 @@ export default function VerticalBarDemo() {
 
     setChartData(data);
     setChartOptions(options);
-  }, []);
+  }, [ingresos, gastos, presupuestos]);
 
   return (
     <div className="card">

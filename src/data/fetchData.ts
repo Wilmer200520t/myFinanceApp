@@ -57,6 +57,25 @@ export async function getData(
   }
 }
 
+export async function getQuery(query: string): Promise<number | number[]> {
+  try {
+    const response = await fetch(`${BASE_URL}/get`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query }),
+    });
+
+    let json = await response.json();
+    json = json[0] || [];
+    return json as number | number[];
+  } catch (error) {
+    console.error("Error:", error);
+    return [];
+  }
+}
+
 export async function createData(
   path: string,
   data: AllTypesRow,

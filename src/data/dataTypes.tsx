@@ -77,6 +77,7 @@ export type Presupuestos = {
 
 export type Transacciones = {
   id?: number;
+  user_id?: number;
   account_id?: number;
   ejericio_id?: number;
   monto?: number;

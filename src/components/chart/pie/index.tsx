@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import { Chart } from "primereact/chart";
+interface VerticalBarDemoProps {
+  data: {
+    gastos: number;
+    presupuestos: number;
+  };
+}
 
-export default function PieChartDemo() {
+export default function PieChartDemo({ data }: VerticalBarDemoProps) {
+  const { gastos, presupuestos } = data;
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
 
@@ -11,7 +18,7 @@ export default function PieChartDemo() {
       labels: ["Presupuesto", "Gastos"],
       datasets: [
         {
-          data: [540, 325],
+          data: [presupuestos, gastos],
           backgroundColor: [
             documentStyle.getPropertyValue("--green-500"),
             documentStyle.getPropertyValue("--red-500"),
@@ -44,7 +51,7 @@ export default function PieChartDemo() {
 
     setChartData(data);
     setChartOptions(options);
-  }, []);
+  }, [gastos, presupuestos]);
 
   return (
     <div
